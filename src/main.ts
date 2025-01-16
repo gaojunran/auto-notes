@@ -5,10 +5,11 @@ import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import PrimeVue from 'primevue/config';
-import {FileUpload, Button, Menu, useToast, Toast} from "primevue";
+import {FileUpload, Button, Menu, useToast, Toast, ToastEventBus} from "primevue";
 import Aura from '@primevue/themes/aura';
 import {definePreset} from "@primevue/themes";
 import ToastService from 'primevue/toastservice';
+import MarkDown from 'vue3-markdown-it'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -42,16 +43,16 @@ app.use(router)
         }
     })
     .use(ToastService)
+    .use(MarkDown)
     .component("FileUpload", FileUpload)
     .component("Toast", Toast)
     .component("Button", Button)
     .component("Menu", Menu)
 
 
-app.config.errorHandler = (err, vm, info) => {
-    const toast = useToast();
-    toast.add({severity: "error", summary: "发生错误", detail: err.message})
-    console.log(err, vm, info)
+app.config.errorHandler = async (err, vm, info) => {
+    console.error(err, vm, info);
+    await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: err?.message || "未知错误，请联系管理员" });
 }
 
 app.mount("#app");
