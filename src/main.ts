@@ -5,9 +5,10 @@ import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import PrimeVue from 'primevue/config';
-import {FileUpload, Button, Menu} from "primevue";
+import {FileUpload, Button, Menu, useToast, Toast} from "primevue";
 import Aura from '@primevue/themes/aura';
 import {definePreset} from "@primevue/themes";
+import ToastService from 'primevue/toastservice';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -32,14 +33,25 @@ const MyPreset = definePreset(Aura, {
     }
 });
 
-createApp(App)
-    .use(router)
+const app  = createApp(App);
+
+app.use(router)
     .use(PrimeVue, {
         theme: {
             preset: MyPreset
         }
     })
+    .use(ToastService)
     .component("FileUpload", FileUpload)
+    .component("Toast", Toast)
     .component("Button", Button)
     .component("Menu", Menu)
-    .mount("#app");
+
+
+app.config.errorHandler = (err, vm, info) => {
+    const toast = useToast();
+    toast.add({severity: "error", summary: "发生错误", detail: err.message})
+    console.log(err, vm, info)
+}
+
+app.mount("#app");

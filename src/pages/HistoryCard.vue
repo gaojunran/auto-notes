@@ -66,4 +66,5 @@ const formatTime = (seconds) => {
 
   return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
 }
+
 </script>
