@@ -1,7 +1,7 @@
 import request from "./request.ts";
 
 export interface RecordResponse {
-    rid: number;
+    id: number;
     duration: number;
     topic: string;
     abstract: string;
@@ -44,8 +44,10 @@ export interface ExerciseResponse {
 
 
 
-export const postRecord = async (record: Blob)=> {
-    const response: RecordResponse = await request("/record", "POST", record)
+export const postRecord = async (record: FormData)=> {
+    const response: RecordResponse = await request("/record", "POST", record,{
+        'Content-Type': "multipart/form-data; boundary=--------------------------061678868844241685450298",
+        "Accept": "*/*"})
     return response;
 }
 

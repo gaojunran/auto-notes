@@ -14,13 +14,11 @@ instance.interceptors.response.use((response: AxiosResponse) => {
     throw error
 })
 
-const request = (url: string, method?: string = 'GET', submitData: object = {}) => {
+const request = (url: string, method?: string = 'GET', submitData?: any, headers?: object) => {
     const paramsOrData = method.toLowerCase() === 'get' ? 'params' : 'data';
-    return instance({
-        url,
-        method,
-        [paramsOrData]: submitData
-    })
+    const config = {url, method, [paramsOrData]: submitData};
+    headers && (config.headers = headers);
+    return instance(config)
 }
 
 export default request

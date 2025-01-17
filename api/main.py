@@ -1,13 +1,16 @@
-from fastapi import FastAPI, HTTPException
+import time
+
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from pydantic import BaseModel
-from typing import List
+from typing import List, Annotated
 import json
 
 app = FastAPI()
 
+
 # 定义请求和响应模型
 class RecordResponse(BaseModel):
-    rid: int
+    id: int
     duration: int
     topic: str
     abstract: str
@@ -42,7 +45,7 @@ class ExerciseResponse(BaseModel):
 
 # 伪造的数据，由大模型生成，仅供测试使用
 FAKE_RECORD_RESPONSE = {
-    "rid": 1,
+    "id": 2,
     "duration": 120,
     "topic": "人工智能",
     "abstract": "本文介绍了人工智能的基本概念和应用。",
@@ -84,12 +87,13 @@ FAKE_EXERCISE_RESPONSE = {
 
 # 定义路由
 @app.post("/record", response_model=RecordResponse)
-async def post_record(record: str):
-    # 这里仅伪造返回数据，实际应用中需要处理上传的Blob数据
+async def post_record(file: UploadFile):
+    time.sleep(2) # 模拟延时
     return FAKE_RECORD_RESPONSE
 
 @app.post("/note", response_model=NoteResponse)
 async def get_note(note: NoteRequest):
+    time.sleep(8) # 模拟延时
     return FAKE_NOTE_RESPONSE
 
 @app.post("/thought", response_model=ThoughtResponse)

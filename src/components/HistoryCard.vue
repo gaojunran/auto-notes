@@ -1,8 +1,20 @@
 <template>
   <div
-      class="w-full bg-gray-900 shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-102 hover:shadow-xl cursor-pointer"
+      class="w-full bg-gray-900 shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-102 hover:shadow-xl cursor-pointer relative"
       @click="$emit('cardClick')"
   >
+
+    <div class="absolute top-6 right-6">
+      <Button outlined icon="pi pi-trash" @click.stop="deleteCache(props.id); router.push('/quickjump')" severity="danger"
+              :pt="{
+        root: {
+          class: '!border-red-500/30'
+        }
+              }"
+      />
+      <!-- click.stop 阻止事件冒泡 -->
+    </div>
+
     <div class="p-6">
       <h2 class="text-2xl font-bold text-gray-100 mb-2">{{ topic }}</h2>
       <p class="text-gray-300 mb-4">{{ abstract }}</p>
@@ -26,9 +38,14 @@
 </template>
 
 <script setup>
-import { ClockIcon } from 'lucide-vue-next'
+import {ClockIcon} from 'lucide-vue-next'
+import Button from 'primevue/button'
+import {deleteCache} from "../utils.ts";
+import {useRouter} from "vue-router"; // 导入 Button 组件
 
-defineProps({
+const router = useRouter()
+
+const props = defineProps({
   id: {
     type: Number,
     required: true
@@ -49,7 +66,6 @@ defineProps({
     type: Array,
     required: false
   },
-
 })
 
 defineEmits(['cardClick'])

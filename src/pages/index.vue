@@ -28,6 +28,7 @@
         </div>
         <HistoryCard
             v-for="history in histories"
+            class="mb-2"
             :key="history.id"
             :id="history.id"
             :tags="history.tags"
@@ -46,24 +47,18 @@
     import {useRouter} from "vue-router";
     import {onMounted, ref} from "vue";
     import { load } from '@tauri-apps/plugin-store';
-    import { CourseProps } from "../types.js";
-    import HistoryCard from "./HistoryCard.vue";
+    import { Cache } from "../types.js";
+    import HistoryCard from "../components/HistoryCard.vue";
+    import {readAllCache, readCache} from "../utils.ts";
 
     const router = useRouter()
-    const histories = ref([] as CourseProps[])
+    const histories = ref([] as Cache[])
 
     const navigateTo = (url: string) => {
       router.push(url);
     }
 
-    const loadHistories = async () => {
-      const store = await load('store.json', {autoSave: true});
-      return await store.get<CourseProps[]>('cache') || [
-        {id: 1, tags: ['数据结构', 'ICSI213'], duration: 3421, abstract: '这节课主要讲了关于栈和队列的理论知识。', topic: '栈和队列'}
-      ];
-    }
-
     onMounted(async () => {
-      histories.value = await loadHistories()
+      histories.value = await readAllCache();
     })
   </script>

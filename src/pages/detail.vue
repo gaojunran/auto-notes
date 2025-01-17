@@ -41,7 +41,7 @@ import {useRoute} from "vue-router";
 
 const route = useRoute();
 
-const id = route.fullPath.split('/')[3];
+const id = route.params.id;
 const type = route.fullPath.split('/')[2];
 
 const menuItems = ref([

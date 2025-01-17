@@ -1,4 +1,26 @@
 <script setup lang="ts">
+import {FileUploadUploaderEvent} from "primevue";
+import {postRecord} from "../apis.ts";
+import {ref} from "vue";
+import Loading from "../components/Loading.vue";
+import {useRouter} from "vue-router";
+import {addCache, updateCache} from "../utils.ts";
+
+const router = useRouter();
+const loading = ref(false);
+
+const handleUpload = async (event: FileUploadUploaderEvent) => {
+  const file = event.files[0];
+
+  loading.value = true;
+  const formData = new FormData();
+  formData.append("file", file);
+  const data = await postRecord(formData);
+  console.log(data)
+  loading.value = false;
+  await addCache(data);
+  await router.push(`/detail/recognition/${data.id}`)
+}
 
 </script>
 
@@ -8,23 +30,29 @@
       <FileUpload
           choose-label="选择音频文件" upload-label="上传" cancel-label="取消"
           accept="audio/*"
+          custom-upload
+          @uploader="handleUpload"
           :pt="{
+              header: {
+                class: 'flex items-center justify-between'
+              },
               fileThumbnail: {
                 class: 'hidden'
               },
               file: {
-                class: 'bg-white/10 rounded'
+                class: 'bg-white/5 rounded'
               }
           }"
           :multiple="false"
-      />
-
+      >
+        <template #empty>
+          <div class="bg-white/5 w-full p-4 rounded">
+            还没有选择文件，快来上传吧！
+          </div>
+        </template>
+      </FileUpload>
+      <Loading v-model="loading" title="文件上传中，请稍等..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     </div>
-
   </div>
 
 </template>
-
-<style scoped>
-
-</style>

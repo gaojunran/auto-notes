@@ -9,7 +9,6 @@
           开始录音
         </button>
       </div>
-      <div class="text-black text-center my-8">此功能目前仅在浏览器中可用。</div>
 
       <div v-if="isRecording" class="flex justify-center space-x-4">
         <button @click="pauseRecording" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out flex items-center">
@@ -42,6 +41,7 @@
 
 <script setup>
 // TODO: 实现本地录音功能，可能需要与Rust进行交互
+throw new Error('此功能目前仅在浏览器中可用。')
 
 import { ref, onUnmounted } from 'vue'
 import { MicIcon, PauseIcon, PlayIcon, SquareIcon, UploadIcon, RefreshCwIcon } from 'lucide-vue-next'
