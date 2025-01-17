@@ -19,7 +19,7 @@
       </nav>
       <div class="p-4">
         <button
-            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
             @click="router.push('/')">
           返回主页
         </button>
@@ -27,7 +27,7 @@
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 p-6 overflow-auto bg-white/5 m-4 rounded-2xl">
+    <main class="flex-1 p-6 overflow-auto bg-white/2 m-4 rounded-2xl">
       <router-view></router-view>
     </main>
   </div>

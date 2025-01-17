@@ -2,7 +2,14 @@ import {load} from "@tauri-apps/plugin-store";
 import {Cache} from "./types.ts";
 
 const EXAMPLE_CACHE: Cache[] = [
-    {id: 1, tags: ['数据结构', 'ICSI213'], duration: 3421, abstract: '这节课主要讲了关于栈和队列的理论知识。', topic: '栈和队列'}
+    {
+        id: 1,
+        tags: ['数据结构', 'ICSI213'],
+        duration: 3421,
+        abstract: '这节课主要讲了关于栈和队列的理论知识。',
+        topic: '栈和队列',
+        raw_recognition: '这里应该放识别结果。'
+    }
 ];
 
 const store = await load('store.json', {autoSave: true});
@@ -27,7 +34,7 @@ export const readCache = async (id: number) => {
 }
 
 export const updateCache = async (id: number, kv: object) => {
-    const cache = readAllCache();
+    const cache = await readAllCache();
     const index = cache.findIndex(c => c.id === id);
     if (index === -1) {
         throw new Error('Cache not found');

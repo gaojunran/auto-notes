@@ -23,7 +23,7 @@ export interface ThoughtRequest {
 }
 
 export interface Question {
-    question: string;
+    question: string | string[];
     answer: string;
     analysis?: string;
     knowledge?: string[];
@@ -39,7 +39,7 @@ export interface ExerciseRequest {
 }
 
 export interface ExerciseResponse {
-    exercises: Question[];
+    questions: Question[];
 }
 
 

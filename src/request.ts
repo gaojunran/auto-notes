@@ -1,6 +1,4 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
-import store from '@/store'
-import router from '@/router'
 
 
 const instance = axios.create({

@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 //@ts-ignore
 import MarkDown from "vue3-markdown-it";
 import {useRoute} from "vue-router";
-import {readCache} from "../../../utils.ts";
+import {readCache, updateCache} from "../../../utils.ts";
 import Loading from "../../../components/Loading.vue";
 
 const note = ref("");
@@ -12,18 +12,19 @@ const id = Number(useRoute().params.id);
 const loading = ref(false);
 
 onMounted(async () => {
-  loading.value = true;
   const cache = await readCache(id)
   if (cache.notes) { // use cache if exists
     note.value = cache.notes;
   } else {   // request from server
+    loading.value = true;
     const response = await getNote({
       topic: cache.topic,
       raw_recognition: cache!!.raw_recognition
     });
     note.value = response.notes;
+    loading.value = false;
+    await updateCache(id, {notes: response.notes})
   }
-  loading.value = false;
 });
 
 </script>

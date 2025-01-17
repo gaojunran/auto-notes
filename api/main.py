@@ -28,7 +28,7 @@ class ThoughtRequest(BaseModel):
     num: int
 
 class Question(BaseModel):
-    question: str
+    question: str | list[str]
     answer: str
     analysis: str | None = None
     knowledge: list[str] | None = None
@@ -41,7 +41,7 @@ class ExerciseRequest(BaseModel):
     num: int
 
 class ExerciseResponse(BaseModel):
-    exercises: list[Question]
+    questions: list[Question]
 
 # 伪造的数据，由大模型生成，仅供测试使用
 FAKE_RECORD_RESPONSE = {
@@ -76,7 +76,7 @@ FAKE_THOUGHT_RESPONSE = {
 }
 
 FAKE_EXERCISE_RESPONSE = {
-    "exercises": [
+    "questions": [
         {
             "question": ["人工智能有哪些应用领域？", "自然语言处理", "图像识别", "机器学习"],
             "answer": "自然语言处理", # 单选
