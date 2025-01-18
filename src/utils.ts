@@ -99,7 +99,7 @@ export const installUv = async (loading: Ref<boolean>) => {
     loading.value = true
     const command = {
         windows: {
-            beforeExec: 'echo "Hello, World!"',  // Fuck you Windows
+            beforeExec: '',  // Fuck you Windows
             script: 'winget install --id=astral-sh.uv -e'
         },
         macos: {
@@ -116,7 +116,9 @@ export const installUv = async (loading: Ref<boolean>) => {
     }
     const script = command[currentPlatform].script.split(' ')
     const beforeExec = command[currentPlatform].beforeExec.split(' ')
-    const rs1 = await Command.create(beforeExec[0], beforeExec.slice(1), {cwd: apiPath}).execute()
+    if (beforeExec.length > 0) {
+        const rs1 = await Command.create(beforeExec[0], beforeExec.slice(1), {cwd: apiPath}).execute()
+    }
     if (rs1.code !== 0) {
         loading.value = false
         throw new Error(rs1.stderr)
