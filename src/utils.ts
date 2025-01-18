@@ -137,7 +137,10 @@ export const bootService = async (loading: Ref<boolean>) => {
     const apiPath = await resolveResource('../api/')
     loading.value = true
     const command = await Command.create('uv', ['run', 'fastapi', 'run', 'main.py', '--port', '5100'], {
-        cwd: apiPath
+        cwd: apiPath, encoding: 'utf8', env: {
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONLEGACYWINDOWSSTDIO": "utf-8"
+        }
     });
 
     command.on('close', data => {
