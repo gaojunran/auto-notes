@@ -38,6 +38,9 @@
             @cardClick="navigateTo(`/detail/recognition/${history.id}`)"
         >
         </HistoryCard>
+        <Button outlined icon="pi pi-cog" class="!fixed !bottom-0 !right-0 !mr-4 !mb-4" rounded
+                @click="navigateTo('/settings')"
+        ></Button>
       </div>
     </div>
   </template>

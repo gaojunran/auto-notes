@@ -85,6 +85,10 @@ FAKE_EXERCISE_RESPONSE = {
     ]
 }
 
+@app.get("/test", response_model=str)
+async def test():
+    return "Hello, World!"
+
 # 定义路由
 @app.post("/record", response_model=RecordResponse)
 async def post_record(file: UploadFile):
@@ -93,13 +97,15 @@ async def post_record(file: UploadFile):
 
 @app.post("/note", response_model=NoteResponse)
 async def get_note(note: NoteRequest):
-    time.sleep(8) # 模拟延时
+    time.sleep(2) # 模拟延时
     return FAKE_NOTE_RESPONSE
 
 @app.post("/thought", response_model=ThoughtResponse)
 async def get_thought(thought: ThoughtRequest):
+    time.sleep(2) # 模拟延时
     return FAKE_THOUGHT_RESPONSE
 
 @app.post("/exercise", response_model=ExerciseResponse)
 async def get_exercise(exercise: ExerciseRequest):
+    time.sleep(2) # 模拟延时
     return FAKE_EXERCISE_RESPONSE

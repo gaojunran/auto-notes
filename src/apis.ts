@@ -42,7 +42,10 @@ export interface ExerciseResponse {
     questions: Question[];
 }
 
-
+export const testConnection = async () => {
+    const response = await request("/test", "GET")
+    return response === "Hello, World!";
+}
 
 export const postRecord = async (record: FormData)=> {
     const response: RecordResponse = await request("/record", "POST", record,{

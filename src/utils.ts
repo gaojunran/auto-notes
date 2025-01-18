@@ -1,5 +1,11 @@
 import {load} from "@tauri-apps/plugin-store";
 import {Cache} from "./types.ts";
+import {ToastEventBus} from "primevue";
+import {resolveResource} from "@tauri-apps/api/path";
+import {Command} from "@tauri-apps/plugin-shell";
+import {testConnection} from "./apis.ts";
+import {Ref} from "vue";
+import {platform} from "@tauri-apps/plugin-os";
 
 const EXAMPLE_CACHE: Cache[] = [
     {
@@ -22,6 +28,19 @@ export const readAllCache = async () => {
     }
     console.log('cache', cache)
     return cache;
+}
+
+export const checkUvInstalled = async () => {
+    if (!await store.get<Boolean>('uv')) {
+        await store.set('uv', true);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+export const removeUvInstalled = async () => {
+    await store.set('uv', false);
 }
 
 export const readCache = async (id: number) => {
@@ -60,4 +79,80 @@ export const deleteCache = async (id: number) => {
     }
     cache.splice(index, 1);
     await store.set('cache', cache);
+}
+
+export const clearCache = async () => {
+    await store.set('cache', []);
+}
+
+export const info = async (msg: string) => {
+    await ToastEventBus.emit('add', { severity: "info", summary: "日志", detail: msg, life: 3000 });
+}
+
+export const success = async (msg: string) => {
+    await ToastEventBus.emit('add', { severity: "success", summary: "任务成功执行", detail: msg, life: 3000 });
+}
+
+export const installUv = async (loading: Ref<boolean>) => {
+    const apiPath = await resolveResource('../api/')
+    const currentPlatform = platform();
+    loading.value = true
+    const command = {
+        windows: {
+            beforeExec: 'powershell Set-ExecutionPolicy RemoteSigned -Scope CurrentUser',
+            script: 'powershell .\\uv_windows.ps1'
+        },
+        macos: {
+            beforeExec: 'chmod +x uv_macos.sh',
+            script: './uv_macos.sh'
+        },
+        linux: {
+            beforeExec: 'chmod +x uv_linux.sh',
+            script: './uv_linux.sh'
+        }
+    }
+    if (!command[currentPlatform]) {
+        throw new Error('不支持当前平台，请手动安装`uv`!')
+    }
+    const script = command[currentPlatform].script.split(' ')
+    const beforeExec = command[currentPlatform].beforeExec.split(' ')
+    const rs1 = await Command.create(beforeExec[0], beforeExec.slice(1), {cwd: apiPath}).execute()
+    if (rs1.code !== 0) {
+        loading.value = false
+        throw new Error(rs1.stderr)
+    }
+    console.log(rs1.stdout)
+    const rs2 = await Command.create(script[0], script.slice(1), {cwd: apiPath}).execute()
+    if (rs2.code !== 0) {
+        loading.value = false
+        throw new Error(rs2.stderr)
+    }
+    console.log(rs2.stdout)
+    loading.value = false
+    await success("依赖安装成功！")
+}
+
+export const bootService = async (loading: Ref<boolean>) => {
+    let count = 0;
+    const apiPath = await resolveResource('../api/')
+    loading.value = true
+    await Command.create('uv', ['run', 'fastapi', 'run', '--port', '5100'], {
+        cwd: apiPath
+    }).spawn()
+    const interval = setInterval(async () => {
+        const isConnected = await testConnection()
+        if (isConnected) {
+            clearInterval(interval)
+            loading.value = false
+            await success("服务启动成功！")
+        } else {
+            count += 1
+            if (count > 20) {
+                clearInterval(interval)
+                loading.value = false
+                throw new Error("启动服务失败！")
+            }
+        }
+    }, 2000)
+
 }

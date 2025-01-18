@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-800 text-white m-4 rounded-2xl flex flex-col overflow-hidden">
+    <aside class="w-40 bg-gray-800 text-white m-4 rounded-2xl flex flex-col overflow-hidden">
       <div class="p-6">
         <h1 class="text-2xl font-bold">学习中心</h1>
       </div>

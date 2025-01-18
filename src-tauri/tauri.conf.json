@@ -22,6 +22,9 @@
     }
   },
   "bundle": {
+    "resources": [
+      "../api/"
+    ],
     "active": true,
     "targets": "all",
     "icon": [

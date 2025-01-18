@@ -10,6 +10,47 @@
     "core:window:allow-start-dragging",
     "opener:default",
     "store:default",
-    "store:default"
+    "store:default",
+    "shell:default",
+    "fs:allow-read-file",
+    "fs:allow-resource-read-recursive",
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "name": "uv",
+          "cmd": "uv",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "chmod",
+          "cmd": "chmod",
+          "args": true
+        },
+        {
+          "name": "",
+          "cmd": "powershell",
+          "args": true
+        },
+        {
+          "name": "./uv_macos.sh",
+          "cmd": "./uv_macos.sh",
+          "args": true
+        },
+        {
+          "name": "./uv_linux.sh",
+          "cmd": "./uv_linux.sh",
+          "args": true
+        }
+      ]
+    },
+    "fs:default",
+    "fs:default",
+    "os:default"
   ]
 }
