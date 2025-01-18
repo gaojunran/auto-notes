@@ -34,7 +34,7 @@
         },
         {
           "name": "powershell",
-          "cmd": "powershell",
+          "cmd": "powershell.exe",
           "args": true
         },
         {

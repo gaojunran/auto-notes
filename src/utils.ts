@@ -100,7 +100,7 @@ export const installUv = async (loading: Ref<boolean>) => {
     const command = {
         windows: {
             beforeExec: 'powershell Set-ExecutionPolicy RemoteSigned -Scope CurrentUser',
-            script: 'powershell .\\uv_windows.ps1'
+            script: 'powershell ./uv_windows.ps1'
         },
         macos: {
             beforeExec: 'chmod +x uv_macos.sh',
@@ -136,9 +136,19 @@ export const bootService = async (loading: Ref<boolean>) => {
     let count = 0;
     const apiPath = await resolveResource('../api/')
     loading.value = true
-    await Command.create('uv', ['run', 'fastapi', 'run', '--port', '5100'], {
+    const command = await Command.create('uv', ['run', 'fastapi', 'run', 'main.py', '--port', '5100'], {
         cwd: apiPath
-    }).spawn()
+    });
+
+    command.on('close', data => {
+        console.log(`command finished with code ${data.code} and signal ${data.signal}`)
+    });
+    command.on('error', error => console.error(`command error: "${error}"`));
+    command.stdout.on('data', line => console.log(`command stdout: "${line}"`));
+    command.stderr.on('data', line => console.log(`command stderr: "${line}"`));
+
+    await command.spawn();
+
     const interval = setInterval(async () => {
         const isConnected = await testConnection()
         if (isConnected) {
@@ -150,7 +160,7 @@ export const bootService = async (loading: Ref<boolean>) => {
             if (count > 20) {
                 clearInterval(interval)
                 loading.value = false
-                throw new Error("启动服务失败！")
+                throw new Error("服务启动失败！")
             }
         }
     }, 2000)
