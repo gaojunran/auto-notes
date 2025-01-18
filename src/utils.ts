@@ -99,8 +99,8 @@ export const installUv = async (loading: Ref<boolean>) => {
     loading.value = true
     const command = {
         windows: {
-            beforeExec: 'powershell Set-ExecutionPolicy RemoteSigned -Scope CurrentUser',
-            script: 'powershell ./uv_windows.ps1'
+            beforeExec: 'echo "Hello, World!"',  // Fuck you Windows
+            script: 'winget install --id=astral-sh.uv -e'
         },
         macos: {
             beforeExec: 'chmod +x uv_macos.sh',

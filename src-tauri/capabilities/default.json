@@ -33,10 +33,11 @@
           "args": true
         },
         {
-          "name": "powershell",
-          "cmd": "powershell.exe",
+          "name": "winget",
+          "cmd": "winget",
           "args": true
         },
+
         {
           "name": "./uv_macos.sh",
           "cmd": "./uv_macos.sh",
