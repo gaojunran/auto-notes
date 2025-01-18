@@ -33,7 +33,7 @@
           "args": true
         },
         {
-          "name": "",
+          "name": "powershell",
           "cmd": "powershell",
           "args": true
         },
