@@ -31,7 +31,7 @@ onMounted(async () => {
       {{ slotProps.item.text }}
     </template>
     <template #opposite="slotProps">
-      <div class="text-white/50 font-mono">
+      <div class="text-white/50 font-mono text-[14px]">
         {{ slotProps.item.period }}
       </div>
     </template>
