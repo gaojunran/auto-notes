@@ -116,14 +116,15 @@ export const installUv = async (loading: Ref<boolean>) => {
     }
     const script = command[currentPlatform].script.split(' ')
     const beforeExec = command[currentPlatform].beforeExec.split(' ')
-    if (beforeExec.length > 0) {
+    if (beforeExec[0] !== '') {
         const rs1 = await Command.create(beforeExec[0], beforeExec.slice(1), {cwd: apiPath}).execute()
+        if (rs1.code !== 0) {
+            loading.value = false
+            throw new Error(rs1.stderr)
+        }
+        console.log(rs1.stdout)
     }
-    if (rs1.code !== 0) {
-        loading.value = false
-        throw new Error(rs1.stderr)
-    }
-    console.log(rs1.stdout)
+
     const rs2 = await Command.create(script[0], script.slice(1), {cwd: apiPath}).execute()
     if (rs2.code !== 0) {
         loading.value = false
@@ -170,4 +171,21 @@ export const bootService = async (loading: Ref<boolean>) => {
         }
     }, 2000)
 
+}
+
+export const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const remainingSeconds = seconds % 3600;
+    const minutes = Math.floor(remainingSeconds / 60);
+    const finalSeconds = remainingSeconds % 60;
+
+    const paddedHours = String(hours).padStart(2, '0');
+    const paddedMinutes = String(minutes).padStart(2, '0');
+    const paddedSeconds = String(finalSeconds).padStart(2, '0');
+
+    return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+}
+
+export const formatDuration = (start: number, end: number, sep = ' - ') => {
+    return formatTime(start) + sep + formatTime(end);
 }

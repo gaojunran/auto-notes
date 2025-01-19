@@ -25,3 +25,7 @@ uv run fastapi dev main.py --port 5100
 ```
 
 (注意，必须加上`uv run`才是在Python虚拟环境下运行！)
+
+## 建议开发环境
+
+PyCharm + Pydantic 插件

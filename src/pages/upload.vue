@@ -4,21 +4,21 @@ import {postRecord} from "../apis.ts";
 import {ref} from "vue";
 import Loading from "../components/Loading.vue";
 import {useRouter} from "vue-router";
-import {addCache, updateCache} from "../utils.ts";
+import {addCache} from "../utils.ts";
+import {Cache} from "../types.ts";
 
 const router = useRouter();
 const loading = ref(false);
 
 const handleUpload = async (event: FileUploadUploaderEvent) => {
   const file = event.files[0];
-
   loading.value = true;
   const formData = new FormData();
   formData.append("file", file);
   const data = await postRecord(formData);
   console.log(data)
   loading.value = false;
-  await addCache(data);
+  await addCache(data as Cache);
   await router.push(`/detail/recognition/${data.id}`)
 }
 

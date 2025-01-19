@@ -40,7 +40,7 @@
 <script setup>
 import {ClockIcon} from 'lucide-vue-next'
 import Button from 'primevue/button'
-import {deleteCache} from "../utils.ts";
+import {deleteCache, formatTime} from "../utils.ts";
 import {useRouter} from "vue-router"; // 导入 Button 组件
 
 const router = useRouter()
@@ -70,17 +70,6 @@ const props = defineProps({
 
 defineEmits(['cardClick'])
 
-const formatTime = (seconds) => {
-  const hours = Math.floor(seconds / 3600);
-  const remainingSeconds = seconds % 3600;
-  const minutes = Math.floor(remainingSeconds / 60);
-  const finalSeconds = remainingSeconds % 60;
 
-  const paddedHours = String(hours).padStart(2, '0');
-  const paddedMinutes = String(minutes).padStart(2, '0');
-  const paddedSeconds = String(finalSeconds).padStart(2, '0');
-
-  return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
-}
 
 </script>

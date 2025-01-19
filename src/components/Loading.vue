@@ -19,7 +19,7 @@ const props = defineProps({
   <div class="flex items-center justify-center h-full">
     <div class="flex flex-col items-center">
       <ProgressSpinner class="!h-12 !w-12 !m-4" />
-      <div class="text-center mb-2">{{title}}</div>
+      <div class="text-center mb-2 text-white">{{title}}</div>
       <div class="text-center text-sm text-white/40">{{subtitle}}</div>
     </div>
   </div>

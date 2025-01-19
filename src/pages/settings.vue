@@ -27,15 +27,15 @@ const clearAllCache = async () => {
         以下设置请在指引下、慎重考虑后进行操作
       </div>
       <div class="flex items-center mb-4">
-        <div>首次进入软件时，如果依赖安装失败，可尝试：</div>
+        <div class="text-white">首次进入软件时，如果依赖安装失败，可尝试：</div>
         <Button severity="success" icon="pi pi-wrench" label="重新安装uv" size="small" @click="reinstallUv" />
       </div>
       <div class="flex items-center mb-4">
-        <div>进入软件时，如果服务端启动失败，可尝试：</div>
+        <div class="text-white">进入软件时，如果服务端启动失败，可尝试：</div>
         <Button severity="success" icon="pi pi-undo" label="重新启动服务端" size="small" @click="rebootService" />
       </div>
       <div class="flex items-center mb-4">
-        <div>若进行了某些错误操作，可尝试：</div>
+        <div class="text-white">若进行了某些错误操作，可尝试：</div>
         <Button severity="warn" icon="pi pi-trash" label="清空缓存" size="small" @click="clearAllCache" />
       </div>
     </div>

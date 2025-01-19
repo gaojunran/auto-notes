@@ -1,9 +1,9 @@
 import time
 
-from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
-from typing import List, Annotated
-import json
+
+from models import RawRecognition, Point, Link, Subtitle
 
 app = FastAPI()
 
@@ -14,98 +14,82 @@ class RecordResponse(BaseModel):
     duration: int
     topic: str
     abstract: str
-    raw_recognition: str
+    raw_recognition: list[RawRecognition]
 
 class NoteRequest(BaseModel):
     topic: str
-    raw_recognition: str
+    abstract: str
+    raw_recognition: list[RawRecognition]
 
 class NoteResponse(BaseModel):
-    notes: str
+    points: list[Point]
 
-class ThoughtRequest(BaseModel):
-    notes: str
-    num: int
+# class ThoughtRequest(BaseModel):
+#     notes: str
+#     num: int
+#
+# class Question(BaseModel):
+#     question: str | list[str]
+#     answer: str
+#     analysis: str | None = None
+#     knowledge: list[str] | None = None
+#
+# class ThoughtResponse(BaseModel):
+#     questions: list[Question]
+#
+# class ExerciseRequest(BaseModel):
+#     notes: str
+#     num: int
+#
+# class ExerciseResponse(BaseModel):
+#     questions: list[Question]
 
-class Question(BaseModel):
-    question: str | list[str]
-    answer: str
-    analysis: str | None = None
-    knowledge: list[str] | None = None
-
-class ThoughtResponse(BaseModel):
-    questions: list[Question]
-
-class ExerciseRequest(BaseModel):
-    notes: str
-    num: int
-
-class ExerciseResponse(BaseModel):
-    questions: list[Question]
-
-# 伪造的数据，由大模型生成，仅供测试使用
-FAKE_RECORD_RESPONSE = {
-    "id": 2,
-    "duration": 120,
-    "topic": "人工智能",
-    "abstract": "本文介绍了人工智能的基本概念和应用。",
-    "raw_recognition": "00:00:00 -> 00:02:00 人工智能是计算机科学的一个分支，主要研究如何使计算机具有智能..."
-}
-
-FAKE_NOTE_RESPONSE = {
-    "notes": """
-# 人工智能
-    
-## 什么是**人工智能**？
-    
-人工智能是计算机科学的一个分支。
-    
-...
-    """
-}
-
-FAKE_THOUGHT_RESPONSE = {
-    "questions": [
-        {
-            "question": "什么是人工智能？",
-            "answer": "人工智能是计算机科学的一个分支。",
-            "analysis": "本题考查对人工智能基本概念的理解。",
-            "knowledge": ["人工智能", "计算机科学"]
-        }
-    ]
-}
-
-FAKE_EXERCISE_RESPONSE = {
-    "questions": [
-        {
-            "question": ["人工智能有哪些应用领域？", "自然语言处理", "图像识别", "机器学习"],
-            "answer": "自然语言处理", # 单选
-            "knowledge": ["人工智能", "应用领域"]
-        }
-    ]
-}
 
 @app.get("/test", response_model=str)
 async def test():
     return "Hello, World!"
 
-# 定义路由
 @app.post("/record", response_model=RecordResponse)
 async def post_record(file: UploadFile):
     time.sleep(2) # 模拟延时
-    return FAKE_RECORD_RESPONSE
+    return RecordResponse(
+        id=int(time.time()),
+        duration=45*60,
+        topic="布尔代数",
+        abstract="布尔代数是数学的一个分支，它研究的是命题的真值表。",
+        raw_recognition=[
+            RawRecognition(start=0, end=12, text="命题的真值表是...."),
+            RawRecognition(start=13, end=25, text="命题的真值表有几种形式？"),
+        ]
+    )
+
 
 @app.post("/note", response_model=NoteResponse)
 async def get_note(note: NoteRequest):
-    time.sleep(2) # 模拟延时
-    return FAKE_NOTE_RESPONSE
+    time.sleep(2)  # 模拟延时
+    return NoteResponse(
+        points=[
+            Point(importance=2, name="布尔值", summary="布尔值是逻辑中的基本概念，它只有两个取值：真和假。", links=[
+                Link(name="维基百科", href="https://zh.wikipedia.org/wiki/%E5%B8%83%E5%B0%94%E5%80%BC"),
+                Link(name="布尔代数", href="https://zh.wikipedia.org/wiki/%E5%B8%83%E5%B0%94%E4%BB%A3%E6%95%B0"),
+            ], subtitles=[
+                Subtitle(subtitle="真值表",
+                         md="**真值表**是指一个命题的真值对各个可能的取值组合的一种表示。 真值表的形式有很多种，但最常见的形式是用真值或假值来表示命题的真值。",
+                         raw_recognition=[
+                             RawRecognition(start=21 * 60, end=21 * 60 + 12, text="真值表的形式有几种形式？"),
+                             RawRecognition(start=21 * 60 + 13, end=21 * 60 + 25, text="真值表有几种形式？"),
+                         ]
+                )
+            ])
+        ]
+    )
 
-@app.post("/thought", response_model=ThoughtResponse)
-async def get_thought(thought: ThoughtRequest):
-    time.sleep(2) # 模拟延时
-    return FAKE_THOUGHT_RESPONSE
-
-@app.post("/exercise", response_model=ExerciseResponse)
-async def get_exercise(exercise: ExerciseRequest):
-    time.sleep(2) # 模拟延时
-    return FAKE_EXERCISE_RESPONSE
+# @app.post("/thought", response_model=ThoughtResponse)
+# async def get_thought(thought: ThoughtRequest):
+#     time.sleep(2) # 模拟延时
+#     return FAKE_THOUGHT_RESPONSE
+#
+# @app.post("/exercise", response_model=ExerciseResponse)
+# async def get_exercise(exercise: ExerciseRequest):
+#     time.sleep(2) # 模拟延时
+#     return FAKE_EXERCISE_RESPONSE

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen">
+  <div class="flex min-h-screen bg-black/30">
     <!-- Sidebar -->
     <aside class="w-40 bg-gray-800 text-white m-4 rounded-2xl flex flex-col overflow-hidden">
       <div class="p-6">
@@ -46,7 +46,7 @@ const type = route.fullPath.split('/')[2];
 
 const menuItems = ref([
   {name: '课堂回放', icon: PlayCircle, href: `/detail/recognition/${id}`, current: false},
-  {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}`, current: false},
+  {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}/overview`, current: false},
   {name: '思考题', icon: HelpCircle, href: `/detail/thought/${id}`, current: false},
   {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`, current: false},
 ]);

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {Command} from "@tauri-apps/plugin-shell";
-import { resolveResource } from '@tauri-apps/api/path';
 import Loading from "./components/Loading.vue";
-import {testConnection} from "./apis.ts";
 import {bootService, info, installUv, success} from "./utils.ts";
 import {checkUvInstalled} from "./utils.ts";
 const loading = ref(false)
@@ -12,6 +9,7 @@ let tried = false;
 
 onMounted(async () => {
   if (!await checkUvInstalled()) {
+    console.log("Installing uv...")
     await installUv(loading);
   }
   if (tried) {
