@@ -1,39 +1,78 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
-import {formatDuration, readCache} from "../../../utils.ts";
+import {formatDuration, info} from "../../../utils/utils.ts";
 import {RawRecognition} from "../../../types.ts";
 import {Timeline} from "primevue";
-const id = Number(useRoute().params.id);
+import {readCache, updateCache} from "../../../utils/cache.ts";
+import {useJump} from "../../../utils/useJump.ts";
 
+const id = Number(useRoute().params.id);
+const router = useRouter();
 const recognition = ref([] as RawRecognition[]);
+
+const jump = useJump();
+
+
 const timeline = computed(() => {
+  console.log(recognition.value)
   return recognition.value.map((item) => ({
     text: item.text,
-    period: formatDuration(item.start, item.end, '\n'),
+    start: item.start,
+    period: formatDuration(item.start, item.end, '-'),
+    mapping: item.mapping
   }))
 })
+
+const getMappings = async () => {
+  const cache = await readCache(id);
+  if (!cache.points || cache.points.length === 0 || recognition.value[0]?.mapping?.point) {
+    return;
+  }
+  cache.points.forEach((point) => {
+    point.subtitles.forEach((subtitle) => {
+      subtitle.raw_recognition.forEach((period) => {
+        const idx = recognition.value.findIndex((item) => item.start === period.start && item.end === period.end);
+        if (idx !== -1) {
+          recognition.value[idx].mapping = {
+            point: point,
+            subtitle: subtitle,
+          }
+        }
+      })
+    })
+  })
+  await updateCache(id, {raw_recognition: recognition.value})
+}
 
 const getRecognition = async () => {
   const cache = await readCache(id);
   console.log(cache)
-  recognition.value = cache?.raw_recognition;
+  recognition.value = cache.raw_recognition;
 }
 
 onMounted(async () => {
   await getRecognition();
+  await getMappings();
 });
 </script>
 
 <template>
   <Timeline :value="timeline" :pt="{eventOpposite: { class: '!flex-0 !min-w-1/4'} }">
-    <template #content="slotProps">
-      {{ slotProps.item.text }}
+    <template #content="slotProps" >
+      <div>
+        {{ slotProps.item.text }}
+      </div>
+
     </template>
     <template #opposite="slotProps">
-      <div class="text-white/50 font-mono text-[14px]">
+      <div class="text-white/50 text-[14px]" :id="`time-${slotProps.item.start}`">
         {{ slotProps.item.period }}
       </div>
+      <Button severity="secondary" size="small" class="mt-2"
+              v-if="slotProps.item?.mapping?.point && slotProps.item?.mapping?.subtitle"
+              @click="jump.jumpToLevelOne(id, slotProps.item?.mapping?.point?.name)"
+              :label="`${slotProps.item?.mapping?.point?.name} / ${slotProps.item?.mapping?.subtitle?.subtitle}`"></Button>
     </template>
   </Timeline>
 </template>

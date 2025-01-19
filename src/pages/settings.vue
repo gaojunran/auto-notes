@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import {bootService, clearCache, installUv, success} from "../utils.ts";
+import {success} from "../utils/utils.ts";
 import {ref} from "vue";
 import Loading from "../components/Loading.vue";
+import {bootService, installUv} from "../utils/serviceDeps.ts";
+import {clearCache} from "../utils/cache.ts";
 
 const loading = ref(false)
 

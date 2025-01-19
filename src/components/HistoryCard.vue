@@ -40,8 +40,9 @@
 <script setup>
 import {ClockIcon} from 'lucide-vue-next'
 import Button from 'primevue/button'
-import {deleteCache, formatTime} from "../utils.ts";
-import {useRouter} from "vue-router"; // 导入 Button 组件
+import {formatTime} from "../utils/utils.ts";
+import {useRouter} from "vue-router";
+import {deleteCache} from "../utils/cache.ts"; // 导入 Button 组件
 
 const router = useRouter()
 

@@ -9,7 +9,7 @@
         <div
             v-for="item in menuItems"
             :key="item.name"
-            @click="navigateTo(item.href)"
+            @click="router.push(item.href)"
             class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
             :class="{ 'bg-gray-700 text-white': item.current }"
         >
@@ -27,14 +27,14 @@
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 p-6 overflow-auto bg-white/2 m-4 rounded-2xl">
+    <main class="flex-1 px-6 pt-6 pb-2 overflow-auto bg-white/2 m-4 rounded-2xl">
       <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {PlayCircle, BookOpen, HelpCircle, PenTool} from 'lucide-vue-next';
 import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
@@ -42,26 +42,19 @@ import {useRoute} from "vue-router";
 const route = useRoute();
 
 const id = route.params.id;
-const type = route.fullPath.split('/')[2];
+const type = computed(() => route.fullPath.split('/')[2]);
 
 const menuItems = ref([
-  {name: '课堂回放', icon: PlayCircle, href: `/detail/recognition/${id}`, current: false},
-  {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}/overview`, current: false},
-  {name: '思考题', icon: HelpCircle, href: `/detail/thought/${id}`, current: false},
-  {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`, current: false},
+  {name: '课堂回放', icon: PlayCircle, href: `/detail/recognition/${id}`},
+  {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}/overview`},
+  {name: '思考题', icon: HelpCircle, href: `/detail/thought/${id}`},
+  {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`},
 ]);
 
+menuItems.value.forEach(item => {
+  item.current = computed(() => item.href.split('/')[2] === type.value)
+});
+
+
 const router = useRouter();
-
-const navigateTo = (href) => {
-  router.push(href);
-  menuItems.value.forEach(item => {
-    item.current = false;
-  });
-  (menuItems.value.find(item => item.href === href)).current = true;
-}
-
-onMounted(() => {
-  menuItems.value.find(item => type === item.href.split('/')[2]).current = true;
-})
 </script>

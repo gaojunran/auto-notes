@@ -96,5 +96,12 @@ export interface RawRecognition {
      * 识别内容
      */
     text: string;
+    /**
+     * 构建和知识点之间的映射关系
+     */
+    mapping?: {
+        point: Point;
+        subtitle: Subtitle;
+    }
     [property: string]: any;
 }

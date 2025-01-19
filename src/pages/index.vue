@@ -52,7 +52,7 @@
     import { load } from '@tauri-apps/plugin-store';
     import { Cache } from "../types.js";
     import HistoryCard from "../components/HistoryCard.vue";
-    import {readAllCache, readCache} from "../utils.ts";
+    import {readAllCache, readCache} from "../utils/cache.ts";
 
     const router = useRouter()
     const histories = ref([] as Cache[])

@@ -4,8 +4,8 @@ import {postRecord} from "../apis.ts";
 import {ref} from "vue";
 import Loading from "../components/Loading.vue";
 import {useRouter} from "vue-router";
-import {addCache} from "../utils.ts";
 import {Cache} from "../types.ts";
+import {addCache} from "../utils/cache.ts";
 
 const router = useRouter();
 const loading = ref(false);

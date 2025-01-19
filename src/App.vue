@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import Loading from "./components/Loading.vue";
-import {bootService, info, installUv, success} from "./utils.ts";
-import {checkUvInstalled} from "./utils.ts";
+import {info, success} from "./utils/utils.ts";
+import {bootService, checkUvInstalled, installUv} from "./utils/serviceDeps.ts";
 const loading = ref(false)
 const result = ref("")
 let tried = false;

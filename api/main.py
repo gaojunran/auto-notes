@@ -76,10 +76,17 @@ async def get_note(note: NoteRequest):
                 Subtitle(subtitle="真值表",
                          md="**真值表**是指一个命题的真值对各个可能的取值组合的一种表示。 真值表的形式有很多种，但最常见的形式是用真值或假值来表示命题的真值。",
                          raw_recognition=[
-                             RawRecognition(start=21 * 60, end=21 * 60 + 12, text="真值表的形式有几种形式？"),
-                             RawRecognition(start=21 * 60 + 13, end=21 * 60 + 25, text="真值表有几种形式？"),
+                             RawRecognition(start=0, end=12, text="真值表的形式有几种形式？"),
+                             RawRecognition(start=13, end=25, text="真值表有几种形式？"),
                          ]
-                )
+                ),
+                Subtitle(subtitle="真值",
+                         md="**真值**是指命题在某种特定条件下取真的结果。",
+                         raw_recognition=[
+                             RawRecognition(start=22 * 60, end=22 * 60 + 12, text="什么是真值？"),
+                             RawRecognition(start=22 * 60 + 13, end=22 * 60 + 25, text="真值有什么用？"),
+                         ]
+                ),
             ])
         ]
     )
