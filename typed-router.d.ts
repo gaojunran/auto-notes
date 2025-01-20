@@ -25,6 +25,7 @@ declare module 'vue-router/auto-routes' {
     '/detail/note/[id]/overview': RouteRecordInfo<'/detail/note/[id]/overview', '/detail/note/:id/overview', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/detail/recognition/[id]': RouteRecordInfo<'/detail/recognition/[id]', '/detail/recognition/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/detail/thought/[id]': RouteRecordInfo<'/detail/thought/[id]', '/detail/thought/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/network': RouteRecordInfo<'/network', '/network', Record<never, never>, Record<never, never>>,
     '/NotFound': RouteRecordInfo<'/NotFound', '/NotFound', Record<never, never>, Record<never, never>>,
     '/quickjump': RouteRecordInfo<'/quickjump', '/quickjump', Record<never, never>, Record<never, never>>,
     '/record': RouteRecordInfo<'/record', '/record', Record<never, never>, Record<never, never>>,

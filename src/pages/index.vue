@@ -4,19 +4,20 @@
       <div class="w-full max-w-2xl">
         <div class="flex flex-col sm:flex-row gap-4">
           <button
-              @click="navigateTo('/record')"
-              class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-4 px-6 rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 transition duration-300 ease-in-out flex items-center justify-center"
-          >
-            <MicIcon class="w-6 h-6 mr-2" />
-            开始录音
-          </button>
-          <button
               @click="navigateTo('/upload')"
               class="flex-1 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold py-4 px-6 rounded-lg shadow-lg hover:from-green-600 hover:to-teal-700 transition duration-300 ease-in-out flex items-center justify-center"
           >
             <UploadIcon class="w-6 h-6 mr-2" />
             上传音频
           </button>
+          <button
+              @click="navigateTo('/network')"
+              class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-4 px-6 rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 transition duration-300 ease-in-out flex items-center justify-center"
+          >
+            <NetworkIcon class="w-6 h-6 mr-2" />
+            知识点网络
+          </button>
+
         </div>
         <div class="text-lg text-white mt-10 mb-4 font-bold">
           历史课程
@@ -46,7 +47,7 @@
   </template>
 
   <script setup lang="ts">
-    import { MicIcon, UploadIcon } from 'lucide-vue-next'
+    import { MicIcon, UploadIcon, NetworkIcon } from 'lucide-vue-next'
     import {useRouter} from "vue-router";
     import {onMounted, ref} from "vue";
     import { load } from '@tauri-apps/plugin-store';

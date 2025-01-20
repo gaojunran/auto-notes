@@ -7,7 +7,7 @@ import {useRoute, useRouter} from "vue-router";
 import {formatDuration, info} from "../../../../utils/utils.ts";
 import Loading from "../../../../components/Loading.vue";
 import {Point, RawRecognition} from "../../../../types.ts";
-import {Divider} from "primevue";
+import {Divider, Popover} from "primevue";
 import {readCache, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
 const id = Number(useRoute().params.id);
@@ -20,6 +20,12 @@ const router = useRouter();
 const route = useRoute();
 
 const jump = useJump();
+
+const popover = ref();
+
+const togglePopover = (event: any) => {
+  popover.value.toggle(event);
+}
 
 const navigateToOverview = async () => {
   await router.push(`/detail/note/${id}/overview`);
@@ -61,7 +67,8 @@ onMounted(async () => {
             <div>
               {{subtitle.subtitle}}
             </div>
-            <Button size="small" :label="getDuration(subtitle.raw_recognition)" severity="secondary"
+            <Button :pt="{label: {class: '!text-xs'}}"
+                size="small" :label="getDuration(subtitle.raw_recognition)" severity="secondary"
                     class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
             ></Button>
           </div>
@@ -80,9 +87,19 @@ onMounted(async () => {
       <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
     </div>
     <div id="points" class="w-full rounded mb-2 flex justify-start items-center gap-4 flex-0">
-      <Button @click="navigateToOverview" label="总览" icon="pi pi-book" class="!text-sm" severity="secondary"></Button>
+      <Button @click="navigateToOverview" label="总览" icon="pi pi-book" size="small" severity="secondary"></Button>
+      <Button label="相关链接" severity="secondary" size="small" icon="pi pi-link"
+            @click="togglePopover"
+        />
+      <Popover ref="popover">
+        <a v-for="link in currentPoint.links" :key="link.name" :href="link.href" target="_blank"
+           class="p-1 hover:underline text-white/50 hover:text-white transition block"
+        >
+          {{link.name}}
+        </a>
+      </Popover>
       <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' : 'secondary'"
-              class="!text-sm" @click="currentPoint = point"
+              size="small" @click="currentPoint = point"
       ></Button>
     </div>
 
