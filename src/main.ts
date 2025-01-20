@@ -46,7 +46,10 @@ const app  = createApp(App);
 app.use(router)
     .use(PrimeVue, {
         theme: {
-            preset: MyPreset
+            preset: MyPreset,
+            options: {
+                darkModeSelector: '.my-app-dark',
+            }
         }
     })
     .use(ToastService)
