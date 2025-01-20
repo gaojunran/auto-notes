@@ -74,7 +74,7 @@ async def get_note(note: NoteRequest):
                 Link(name="布尔代数", href="https://zh.wikipedia.org/wiki/%E5%B8%83%E5%B0%94%E4%BB%A3%E6%95%B0"),
             ], subtitles=[
                 Subtitle(subtitle="真值表",
-                         md="**真值表**是指一个命题的真值对各个可能的取值组合的一种表示。 真值表的形式有很多种，但最常见的形式是用真值或假值来表示命题的真值。",
+                         md="**真值表**是指一个命题的真值对各个可能的取值组合的一种表示。测试数学公式：$\\sqrt{3x-1}+(1+x)^2$",
                          raw_recognition=[
                              RawRecognition(start=0, end=12, text="真值表的形式有几种形式？"),
                              RawRecognition(start=13, end=25, text="真值表有几种形式？"),

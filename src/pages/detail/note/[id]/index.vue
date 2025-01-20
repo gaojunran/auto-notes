@@ -10,6 +10,8 @@ import {Point, RawRecognition} from "../../../../types.ts";
 import {Divider, Popover} from "primevue";
 import {readCache, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
+import KateX from "@vscode/markdown-it-katex"
+
 const id = Number(useRoute().params.id);
 const loading = ref(false);
 
@@ -73,7 +75,7 @@ onMounted(async () => {
             ></Button>
           </div>
           <div id="md" class="flex-1">
-            <MarkDown :source="currentPoint?.subtitles?.[0]?.md"></MarkDown>
+            <MarkDown :source="subtitle.md" :plugins="[{ plugin: KateX}]"></MarkDown>
           </div>
         </div>
         <Divider :pt="{root: {class: '!py-3 !my-0'}}" />
@@ -119,6 +121,10 @@ onMounted(async () => {
   margin-top: 16px;
   margin-bottom: 8px;
   font-size: 20px;
+  color: lightblue;
+}
+
+#md strong {
   color: lightblue;
 }
 
