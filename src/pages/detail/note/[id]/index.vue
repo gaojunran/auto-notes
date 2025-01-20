@@ -111,21 +111,25 @@ onMounted(async () => {
 
 <style>
 #md h1 {
-  margin-bottom: 16px;
-  font-size: 24px;
   font-weight: bold;
-  color: lightblue;
-}
-
-#md h2 {
-  margin-top: 16px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   font-size: 20px;
   color: lightblue;
 }
 
 #md strong {
   color: lightblue;
+}
+
+#md ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+#md ol {
+  list-style-type: decimal;
+  list-style-position: inside;
 }
 
 </style>

@@ -7,6 +7,22 @@ from models import RawRecognition, Point, Link, Subtitle
 
 app = FastAPI()
 
+TEST_MARKDOWN = """
+以下为CommonMark Markdown的语法示例：
+# 一级标题
+（这里建议只包含一级标题，因为我们在笔记左侧已经有一级子主题了）
+
+**加粗**，*斜体*，~~删除线~~，`python main.py`，$E=mc^2$，
+
+有序列表
+1. 第一项
+2. 第二项
+3. 第三项
+
+无序列表
+- 第一项
+- 第二项
+"""
 
 # 定义请求和响应模型
 class RecordResponse(BaseModel):
@@ -74,7 +90,7 @@ async def get_note(note: NoteRequest):
                 Link(name="布尔代数", href="https://zh.wikipedia.org/wiki/%E5%B8%83%E5%B0%94%E4%BB%A3%E6%95%B0"),
             ], subtitles=[
                 Subtitle(subtitle="真值表",
-                         md="**真值表**是指一个命题的真值对各个可能的取值组合的一种表示。测试数学公式：$\\sqrt{3x-1}+(1+x)^2$",
+                         md=TEST_MARKDOWN,
                          raw_recognition=[
                              RawRecognition(start=0, end=12, text="真值表的形式有几种形式？"),
                              RawRecognition(start=13, end=25, text="真值表有几种形式？"),
