@@ -72,3 +72,8 @@ throw new Error("This page is not implemented yet.");
 <!--  </div>-->
 
 <!--</template>-->
+<template>
+  <div>
+
+  </div>
+</template>

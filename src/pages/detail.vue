@@ -28,7 +28,11 @@
 
     <!-- Main content -->
     <main class="flex-1 px-6 pt-6 pb-2 overflow-auto bg-white/2 m-4 rounded-2xl">
-      <router-view></router-view>
+      <RouterView v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component"/>
+        </transition>
+      </RouterView>
     </main>
   </div>
 </template>

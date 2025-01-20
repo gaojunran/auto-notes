@@ -28,7 +28,7 @@ onMounted(async () => {
   <Loading v-model="loading" title="正在启动大模型服务..." subtitle="首次启动时可能需要安装依赖，请耐心等待..."></Loading>
   <div class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen">
     <RouterView v-slot="{ Component }">
-      <transition name="fade">
+      <transition name="fade" mode="out-in">
         <component :is="Component"/>
       </transition>
     </RouterView>

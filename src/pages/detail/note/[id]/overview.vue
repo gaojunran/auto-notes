@@ -69,17 +69,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
-  <div class="font-bold text-lg">本课思维导图</div>
-  <OrganizationChart :value="org">
-    <template #default="slotProps">
-      <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.level === 2 ? slotProps.node.parent : slotProps.node.label, slotProps.node.level)"/>
-    </template>
-  </OrganizationChart>
-<!--  <div class="font-bold text-lg mt-8 mb-4">本课知识点</div>-->
-<!--  <Button v-for="point in points" :key="point.name" :label="point.name" severity="secondary"-->
-<!--          class="!text-sm" @click="navigateToPoint(point.name)"-->
-<!--  ></Button>-->
+  <div>
+    <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
+    <div class="font-bold text-lg">本课思维导图</div>
+    <OrganizationChart :value="org">
+      <template #default="slotProps">
+        <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.level === 2 ? slotProps.node.parent : slotProps.node.label, slotProps.node.level)"/>
+      </template>
+    </OrganizationChart>
+  </div>
 
 </template>
 

@@ -32,3 +32,8 @@
   <!--<template>-->
   <!--  <Loading v-model="loading" title="正为您生成练习题..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>-->
   <!--</template>-->
+<template>
+  <div>
+
+  </div>
+</template>
