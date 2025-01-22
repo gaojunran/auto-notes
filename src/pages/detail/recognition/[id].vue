@@ -58,23 +58,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Timeline :value="timeline" :pt="{eventOpposite: { class: '!flex-0 !min-w-1/4'} }">
-    <template #content="slotProps" >
-      <div>
-        {{ slotProps.item.text }}
-      </div>
+  <div>
+    <Timeline :value="timeline" :pt="{eventOpposite: { class: '!flex-0 !min-w-1/4'} }">
+      <template #content="slotProps" >
+        <div>
+          {{ slotProps.item.text }}
+        </div>
 
-    </template>
-    <template #opposite="slotProps">
-      <div class="text-white/50 text-[14px]" :id="`time-${slotProps.item.start}`">
-        {{ slotProps.item.period }}
-      </div>
-      <Button severity="secondary" size="small" class="mt-2"
-              v-if="slotProps.item?.mapping?.point && slotProps.item?.mapping?.subtitle"
-              @click="jump.jumpToLevelOne(id, slotProps.item?.mapping?.point?.name)"
-              :label="`${slotProps.item?.mapping?.point?.name} / ${slotProps.item?.mapping?.subtitle?.subtitle}`"></Button>
-    </template>
-  </Timeline>
+      </template>
+      <template #opposite="slotProps">
+        <div class="text-white/50 text-[14px]" :id="`time-${slotProps.item.start}`">
+          {{ slotProps.item.period }}
+        </div>
+        <Button severity="secondary" size="small" class="mt-2"
+                v-if="slotProps.item?.mapping?.point && slotProps.item?.mapping?.subtitle"
+                @click="jump.jumpToLevelOne(id, slotProps.item?.mapping?.point?.name)"
+                :label="`${slotProps.item?.mapping?.point?.name} / ${slotProps.item?.mapping?.subtitle?.subtitle}`"></Button>
+      </template>
+    </Timeline>
+  </div>
+
 </template>
 
 <style scoped>
