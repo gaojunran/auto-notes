@@ -60,52 +60,52 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
-  <div class="flex flex-col h-full">
-    <div id="main" class="flex-1">
-      <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name">
-        <div class="flex" >
-          <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
-            <div>
-              {{subtitle.subtitle}}
+  <div class="h-full">
+    <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
+    <div class="flex flex-col h-full">
+      <div id="main" class="flex-1">
+        <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name">
+          <div class="flex" >
+            <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
+              <div>
+                {{subtitle.subtitle}}
+              </div>
+              <Button :pt="{label: {class: '!text-xs'}}"
+                      size="small" :label="getDuration(subtitle.raw_recognition)" severity="secondary"
+                      class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
+              ></Button>
             </div>
-            <Button :pt="{label: {class: '!text-xs'}}"
-                size="small" :label="getDuration(subtitle.raw_recognition)" severity="secondary"
-                    class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
-            ></Button>
+            <div id="md" class="flex-1">
+              <MarkDown :source="subtitle.md" :plugins="[{ plugin: KateX}]"></MarkDown>
+            </div>
           </div>
-          <div id="md" class="flex-1">
-            <MarkDown :source="subtitle.md" :plugins="[{ plugin: KateX}]"></MarkDown>
-          </div>
+          <Divider :pt="{root: {class: '!py-3 !my-0'}}" />
         </div>
-        <Divider :pt="{root: {class: '!py-3 !my-0'}}" />
       </div>
 
-
-    </div>
-
-    <div id="importance" class="flex gap-2 mb-4 w-max-content rounded-md flex-0">
-      <i class="pi pi-star-fill text-yellow-500" v-for="i in currentPoint.importance || 0" :key="i" />
-      <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
-    </div>
-    <div id="points" class="w-full rounded mb-2 flex justify-start items-center gap-4 flex-0">
-      <Button @click="navigateToOverview" label="总览" icon="pi pi-book" size="small" severity="secondary"></Button>
-      <Button label="相关链接" severity="secondary" size="small" icon="pi pi-link"
-            @click="togglePopover"
+      <div id="importance" class="flex gap-2 mb-4 w-max-content rounded-md flex-0">
+        <i class="pi pi-star-fill text-yellow-500" v-for="i in currentPoint.importance || 0" :key="i" />
+        <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
+      </div>
+      <div id="points" class="w-full rounded mb-2 flex justify-start items-center gap-4 flex-0">
+        <Button @click="navigateToOverview" label="总览" icon="pi pi-book" size="small" severity="secondary"></Button>
+        <Button label="相关链接" severity="secondary" size="small" icon="pi pi-link"
+                @click="togglePopover"
         />
-      <Popover ref="popover">
-        <a v-for="link in currentPoint.links" :key="link.name" :href="link.href" target="_blank"
-           class="p-1 hover:underline text-white/50 hover:text-white transition block"
-        >
-          {{link.name}}
-        </a>
-      </Popover>
-      <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' : 'secondary'"
-              size="small" @click="currentPoint = point"
-      ></Button>
+        <Popover ref="popover">
+          <a v-for="link in currentPoint.links" :key="link.name" :href="link.href" target="_blank"
+             class="p-1 hover:underline text-white/50 hover:text-white transition block"
+          >
+            {{link.name}}
+          </a>
+        </Popover>
+        <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' : 'secondary'"
+                size="small" @click="currentPoint = point"
+        ></Button>
+      </div>
     </div>
-
   </div>
+
 
 </template>
 
