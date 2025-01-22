@@ -2,9 +2,9 @@
 # 使用了uv来管理这个文件的运行环境
 
 # 输入输出文件
-input_file = '区块链输入.txt'
-output_file1 = '区块链输出.md'
-output_file2 = '区块链输出.json'
+input_file = '行列式输入.txt'
+output_file1 = '行列式输出.md'
+output_file2 = '行列式输出.json'
 
 from dotenv import load_dotenv
 load_dotenv()
