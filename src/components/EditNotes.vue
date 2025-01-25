@@ -47,13 +47,15 @@ const onClose = async () => {
 </script>
 
 <template>
-  <Dialog v-model:visible="show" modal :style="{ width: '75%' }" header="编辑笔记" @hide="onClose">
-    <div>
+  <Dialog v-model:visible="show" modal :style="{ width: '75%' }" header="编辑笔记" @hide="onClose"
+          :pt="{header: '!pb-0'}"
+  >
+    <div class="flex justify-center items-center mb-6">
       <SelectButton :allow-empty="false" v-model="currentSelect" :options="options" />
     </div>
 
     <div class="flex justify-center items-center">
-      <Textarea v-model="currentMarkdown" :rows="10" :cols="50" />
+      <Textarea v-model="currentMarkdown" :rows="15" :cols="50" />
     </div>
 
   </Dialog>

@@ -86,7 +86,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div id="importance" class="flex gap-2 mb-4 w-max-content rounded-md flex-0">
+      <div id="importance" class="flex gap-2 mt-6 mb-4 w-max-content rounded-md flex-0">
         <i class="pi pi-star-fill text-yellow-500" v-for="i in currentPoint.importance || 0" :key="i" />
         <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
       </div>
