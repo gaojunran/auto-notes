@@ -21,7 +21,7 @@ export interface Cache extends RecordResponse, Partial<NoteResponse> {
 
 
 /**
- * ApifoxModel
+ * ApifoxModel. 注意：当作为NetworkRequest的字段时，仅传name和importance.
  */
 export interface Point {
     /**
@@ -31,7 +31,7 @@ export interface Point {
     /**
      * 相关链接
      */
-    links: Link[];
+    links?: Link[];
     /**
      * 知识点名称，也是后续建立知识点连接的唯一标识，尽量简洁。
      */
@@ -39,11 +39,11 @@ export interface Point {
     /**
      * 子主题，用于在康奈尔笔记中一一对应。
      */
-    subtitles: Subtitle[];
+    subtitles?: Subtitle[];
     /**
      * 课程总结，Markdown格式。总结课程内容。
      */
-    summary: string;
+    summary?: string;
     [property: string]: any;
 }
 
@@ -104,4 +104,73 @@ export interface RawRecognition {
         subtitle: Subtitle;
     }
     [property: string]: any;
+}
+
+/**
+ * NodeCategory
+ */
+export interface NodeCategory {
+    /**
+     * 类别索引, 必须从0开始，和Node中的category节点相对应。
+     */
+    idx: number;
+    /**
+     * 类别名, 值和topic相同。
+     */
+    name: string;
+    [property: string]: any;
+}
+
+/**
+ * NodeLink
+ */
+export interface NodeLink {
+    /**
+     * 关系权重, 1-5。数字越大表示关系越紧密。
+     */
+    weight: number;
+    /**
+     * 来源节点, 节点idx。
+     */
+    source: number;
+    /**
+     * 目标节点, 节点idx。
+     */
+    target: number;
+    [property: string]: any;
+}
+
+/**
+ * Node
+ */
+export interface Node {
+    /**
+     * 节点组别, 对应请求数组的索引，从0开始。
+     */
+    category: number;
+    /**
+     * 节点id, 节点的唯一id，关系图连线的时候要使用这个id
+     */
+    idx: number;
+    /**
+     * 节点名称, 可能是topic或者point.name
+     */
+    name: string;
+    /**
+     * 节点路由, 用于点击按钮跳转到前端指定的页面。格式如下（以下使用Python的f-string语法）：
+     * 对于topic来说：f"/detail/notes/{id}"，其中id为课程id，不是节点id。
+     * 对于point来说：f"/detail/notes/{id}?point={name}"，其中id为课程id，name为知识点名称。
+     */
+    route: string;
+    /**
+     * 节点大小, （待定）对于topic来说固定为5，对于point来说为其importance，即1-5.
+     */
+    size: number;
+    [property: string]: any;
+}
+
+export interface Lecture {
+    id: number;
+    topic: string;
+    points: Point[];
 }

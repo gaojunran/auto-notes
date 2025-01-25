@@ -3,7 +3,7 @@ import time
 from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
 
-from models import RawRecognition, Point, Link, Subtitle
+from models import RawRecognition, Point, Link, Subtitle, Lecture, Node, NodeLink, NodeCategory
 
 app = FastAPI()
 
@@ -40,25 +40,13 @@ class NoteRequest(BaseModel):
 class NoteResponse(BaseModel):
     points: list[Point]
 
-# class ThoughtRequest(BaseModel):
-#     notes: str
-#     num: int
-#
-# class Question(BaseModel):
-#     question: str | list[str]
-#     answer: str
-#     analysis: str | None = None
-#     knowledge: list[str] | None = None
-#
-# class ThoughtResponse(BaseModel):
-#     questions: list[Question]
-#
-# class ExerciseRequest(BaseModel):
-#     notes: str
-#     num: int
-#
-# class ExerciseResponse(BaseModel):
-#     questions: list[Question]
+class NetworkRequest(BaseModel):
+    lectures: list[Lecture]
+
+class NetworkResponse(BaseModel):
+    nodes: list[Node]
+    links: list[NodeLink]
+    categories: list[NodeCategory]
 
 
 @app.get("/test", response_model=str)
@@ -107,12 +95,25 @@ async def get_note(note: NoteRequest):
         ]
     )
 
-# @app.post("/thought", response_model=ThoughtResponse)
-# async def get_thought(thought: ThoughtRequest):
-#     time.sleep(2) # 模拟延时
-#     return FAKE_THOUGHT_RESPONSE
-#
-# @app.post("/exercise", response_model=ExerciseResponse)
-# async def get_exercise(exercise: ExerciseRequest):
-#     time.sleep(2) # 模拟延时
-#     return FAKE_EXERCISE_RESPONSE
+@app.post("/network", response_model=NetworkResponse)
+async def get_network(network: NetworkRequest):
+    time.sleep(2)  # 模拟延时
+    return NetworkResponse(
+        nodes=[
+            Node(idx=0, name="布尔代数", category=0, size=5, route="/detail/notes/123"), # topic
+            Node(idx=1, name="命题的真值表", category=0, size=1, route="/detail/notes/123?point=命题的真值表"), # point
+            Node(idx=2, name="真值", category=0, size=4, route="/detail/notes/123?point=真值"), # point
+            Node(idx=3, name="另一个point", category=1, size=2, route="/detail/notes/456?point=另一个point"), # point
+            Node(idx=4, name="另一个topic", category=1, size=5, route="/detail/notes/456"), # topic
+        ],
+        links=[
+            NodeLink(source=0, target=1, weight=1),
+            NodeLink(source=0, target=2, weight=2),
+            NodeLink(source=1, target=3, weight=1),
+            NodeLink(source=4, target=3, weight=4),
+        ],
+        categories=[
+            NodeCategory(idx=0, name="布尔代数"),
+            NodeCategory(idx=1, name="另一个topic"),
+        ]
+    )

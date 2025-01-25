@@ -1,5 +1,5 @@
 import request from "./request.ts";
-import {Point, RawRecognition} from "./types.ts";
+import {NodeCategory, NodeLink, Node, Point, RawRecognition, Lecture} from "./types.ts";
 
 export interface RecordResponse {
     /**
@@ -46,55 +46,49 @@ export interface NoteResponse {
     [property: string]: any;
 }
 
-// export interface ThoughtRequest {
-//     notes: string;
-//     num: number;
-// }
-//
-// export interface Question {
-//     question: string | string[];
-//     answer: string;
-//     analysis?: string;
-//     knowledge?: string[];
-// }
-//
-// export interface ThoughtResponse {
-//     questions: Question[];
-// }
-//
-// export interface ExerciseRequest {
-//     notes: string;
-//     num: number;
-// }
-//
-// export interface ExerciseResponse {
-//     questions: Question[];
-// }
+export interface NetworkRequest {
+    lectures: Lecture[];
+    [property: string]: any;
+}
+
+export interface NetworkResponse {
+    /**
+     * 节点类别, 注意：每个topic为一个category。
+     */
+    categories: NodeCategory[];
+    /**
+     * 节点链接, 注意：topic节点和其子point节点之间需要建立链接、各point之间也可以建立链接。
+     */
+    links: NodeLink[];
+    /**
+     * 节点, 注意：课程主题topic和课程的所有知识点point都会作为节点。
+     */
+    nodes: Node[];
+    [property: string]: any;
+}
+
+
 
 export const testConnection = async () => {
     const response = await request("/test", "GET")
     return response === "Hello, World!";
 }
 
-export const postRecord = async (record: FormData)=> {
+export const postRecord = async (record: FormData) => {
     const response: RecordResponse = await request("/record", "POST", record,{
         'Content-Type': "multipart/form-data; boundary=--------------------------061678868844241685450298",
         "Accept": "*/*"})
     return response;
 }
 
-export const getNote = async (note: NoteRequest)=> {
+export const getNote = async (note: NoteRequest) => {
     const response: NoteResponse = await request("/note", "POST", note)
     return response;
 }
 
-// export const getThought = async (thought: ThoughtRequest)=> {
-//     const response: ThoughtResponse = await request("/thought", "POST", thought)
-//     return response;
-// }
-//
-// export const getExercise = async (exercise: ExerciseRequest)=> {
-//     const response: ExerciseResponse = await request("/exercise", "POST", exercise)
-//     return response;
-// }
+export const getNetwork = async (req: NetworkRequest) => {
+    const response: NetworkResponse = await request("/network", "POST", req)
+    return response;
+}
+
 
