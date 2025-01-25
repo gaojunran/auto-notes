@@ -7,7 +7,7 @@ import {Point} from "../../../../types.ts";
 import {useRoute, useRouter} from "vue-router";
 import {OrganizationChart} from "primevue";
 import {Cache} from "../../../../types.ts";
-import {readCache, updateCache} from "../../../../utils/cache.ts";
+import {readCache, setShouldUpdateChart, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
 
 const loading = ref(false);

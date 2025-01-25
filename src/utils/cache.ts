@@ -37,7 +37,6 @@ export const readAllCache = async () => {
         cache = EXAMPLE_CACHE;
         await store.set('cache', cache);
     }
-    console.log('cache', cache)
     return cache;
 }
 export const readCache = async (id: number) => {
@@ -56,7 +55,21 @@ export const updateCache = async (id: number, kv: object) => {
     }
     cache[index] = {...cache[index], ...kv};
     await store.set('cache', cache);
+    await setShouldUpdateChart(true); // Lazy update，每次仅在点击查看图表的时候才需要更新
 }
+
+export const updatePointCache = async (id: number, pointName: string, kv: object) => {
+    const cache = await readCache(id);
+    let point = cache.points.find(p => p.name === pointName);
+    const pointIndex = cache.points.findIndex(p => p.name === pointName);
+    if (!point) {
+        throw new Error('Point not found');
+    }
+    point = {...point, ...kv};
+    cache.points[pointIndex] = point;
+    await updateCache(id, {points: cache.points});
+}
+
 export const addCache = async (cache: Cache) => {
     const allCache = await readAllCache();
     if (allCache.some(c => c.id === cache.id)) {
