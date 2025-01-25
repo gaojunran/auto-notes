@@ -8,9 +8,9 @@ import {formatDuration, info} from "../../../../utils/utils.ts";
 import Loading from "../../../../components/Loading.vue";
 import {Point, RawRecognition} from "../../../../types.ts";
 import {Divider, Popover} from "primevue";
-import {readCache, updateCache} from "../../../../utils/cache.ts";
+import {readCache, setShouldUpdateChart, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
-import KateX from "@vscode/markdown-it-katex"
+
 
 const id = Number(useRoute().params.id);
 const loading = ref(false);
@@ -53,6 +53,7 @@ onMounted(async () => {
     points.value = response.points;
     loading.value = false;
     await updateCache(id, {points: points.value})
+    await setShouldUpdateChart();
   }
   currentPoint.value = points.value.find((point) => point.name === route.query.point);
 });

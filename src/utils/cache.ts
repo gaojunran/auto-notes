@@ -1,5 +1,6 @@
 import {load} from "@tauri-apps/plugin-store";
 import {Cache} from "../types.ts";
+import {EChartsOption} from "echarts";
 
 const EXAMPLE_CACHE: Cache[] = [
     {
@@ -75,4 +76,25 @@ export const deleteCache = async (id: number) => {
 }
 export const clearCache = async () => {
     await store.set('cache', []);
+    await store.set('chart', null);
+}
+
+export const getShouldUpdateChart = async () => {
+    return await store.get<boolean>('shouldUpdateChart') || true;
+}
+
+export const setShouldUpdateChart = async (shouldUpdate: boolean = true) => {
+    await store.set('shouldUpdateChart', shouldUpdate);
+}
+
+export const loadChartCache = async () => {
+    const cache = await store.get<EChartsOption>('chart');
+    if (!cache) {
+        return null;
+    }
+    return cache;
+}
+
+export const updateChartCache = async (cache: EChartsOption) => {
+    await store.set('chart', cache);
 }

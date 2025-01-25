@@ -5,7 +5,7 @@ import {ref} from "vue";
 import Loading from "../components/Loading.vue";
 import {useRouter} from "vue-router";
 import {Cache} from "../types.ts";
-import {addCache} from "../utils/cache.ts";
+import {addCache, setShouldUpdateChart} from "../utils/cache.ts";
 
 const router = useRouter();
 const loading = ref(false);
@@ -19,6 +19,7 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
   console.log(data)
   loading.value = false;
   await addCache(data as Cache);
+  await setShouldUpdateChart();
   await router.push(`/detail/recognition/${data.id}`)
 }
 
