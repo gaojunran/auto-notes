@@ -85,9 +85,9 @@ export interface Subtitle {
  */
 export interface RawRecognition {
     /**
-     * 结束时刻，单位为秒。
+     * 结束时刻，单位为秒。可选。
      */
-    end: number;
+    end?: number;
     /**
      * 开始时刻，单位为秒。
      */
@@ -130,13 +130,13 @@ export interface NodeLink {
      */
     weight: number;
     /**
-     * 来源节点, 节点idx。
+     * 来源节点
      */
-    source: number;
+    source: string;
     /**
-     * 目标节点, 节点idx。
+     * 目标节点
      */
-    target: number;
+    target: string;
     [property: string]: any;
 }
 
@@ -151,7 +151,7 @@ export interface Node {
     /**
      * 节点id, 节点的唯一id，关系图连线的时候要使用这个id
      */
-    idx: number;
+    idx?: number;
     /**
      * 节点名称, 可能是topic或者point.name
      */
@@ -173,4 +173,9 @@ export interface Lecture {
     id: number;
     topic: string;
     points: Point[];
+}
+
+export interface NoteRoute {
+    id: number;
+    point: string;
 }

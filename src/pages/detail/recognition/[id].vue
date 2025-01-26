@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {useRoute, useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
-import {formatDuration, info} from "../../../utils/utils.ts";
+import {formatTime, info} from "../../../utils/utils.ts";
 import {RawRecognition} from "../../../types.ts";
 import {Timeline} from "primevue";
 import {readCache, updateCache} from "../../../utils/cache.ts";
 import {useJump} from "../../../utils/useJump.ts";
 
-const id = Number(useRoute().params.id);
+const id = Number(useRoute().params?.id || 0);
 const router = useRouter();
 const recognition = ref([] as RawRecognition[]);
 
@@ -19,7 +19,7 @@ const timeline = computed(() => {
   return recognition.value.map((item) => ({
     text: item.text,
     start: item.start,
-    period: formatDuration(item.start, item.end, '-'),
+    period: formatTime(item.start),
     mapping: item.mapping
   }))
 })
@@ -30,7 +30,7 @@ const getMappings = async () => {
     return;
   }
   cache.points.forEach((point) => {
-    point.subtitles.forEach((subtitle) => {
+    point?.subtitles?.forEach((subtitle) => {
       subtitle.raw_recognition.forEach((period) => {
         const idx = recognition.value.findIndex((item) => item.start === period.start && item.end === period.end);
         if (idx !== -1) {
@@ -72,7 +72,7 @@ onMounted(async () => {
         </div>
         <Button severity="secondary" size="small" class="mt-2"
                 v-if="slotProps.item?.mapping?.point && slotProps.item?.mapping?.subtitle"
-                @click="jump.jumpToLevelOne(id, slotProps.item?.mapping?.point?.name)"
+                @click="jump.jumpToNote(id, slotProps.item?.mapping?.point?.name)"
                 :label="`${slotProps.item?.mapping?.point?.name} / ${slotProps.item?.mapping?.subtitle?.subtitle}`"></Button>
       </template>
     </Timeline>

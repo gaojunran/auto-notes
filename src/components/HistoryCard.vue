@@ -16,16 +16,20 @@
     </div>
 
     <div class="p-6">
-      <h2 class="text-2xl font-bold text-gray-100 mb-2">{{ topic }}</h2>
-      <p class="text-gray-300 mb-4">{{ abstract }}</p>
+      <div class="flex gap-6 text-white/50 items-center">
+        <h2 class="text-2xl font-bold text-gray-100 mb-2">{{ props.topic }}</h2>
+        <div>{{ props.id }}</div>
+      </div>
+      
+      <p class="text-gray-300 mb-4">{{ props.abstract }}</p>
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <ClockIcon class="h-5 w-5 text-gray-400 mr-2" />
-          <span class="text-sm text-gray-400">{{ formatTime(duration) }}</span>
+          <span class="text-sm text-gray-400">{{ formatTime(props.duration) }}</span>
         </div>
         <div class="flex flex-wrap gap-2">
           <span
-              v-for="tag in tags"
+              v-for="tag in props.tags"
               :key="tag"
               class="px-2 py-1 text-xs font-semibold text-indigo-300 bg-indigo-900 rounded-full"
           >

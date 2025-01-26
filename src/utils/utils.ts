@@ -21,6 +21,6 @@ export const formatTime = (seconds: number) => {
     return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
 }
 
-export const formatDuration = (start: number, end: number, sep = ' - ') => {
-    return formatTime(start) + sep + formatTime(end);
-}
+// export const formatDuration = (start: number, end: number, sep = ' - ') => {
+//     return formatTime(start) + sep + formatTime(end);
+// }

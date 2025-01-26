@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 //@ts-ignore
 import MarkDown from "vue3-markdown-it";
 import {useRoute, useRouter} from "vue-router";
-import {formatDuration, info} from "../../../../utils/utils.ts";
+import {formatTime, info} from "../../../../utils/utils.ts";
 import Loading from "../../../../components/Loading.vue";
 import {Point, RawRecognition} from "../../../../types.ts";
 import {Divider, Popover} from "primevue";
@@ -35,10 +35,10 @@ const navigateToOverview = async () => {
   await router.push(`/detail/note/${id}/overview`);
 }
 
-const getDuration = (recognitions: RawRecognition[]) => {
+const getStartTime = (recognitions: RawRecognition[]) => {
   let start = recognitions[0].start;
-  let end = recognitions[recognitions.length - 1].end;
-  return formatDuration(start, end, "-")
+  // let end = recognitions[recognitions.length - 1].end;
+  return formatTime(start);
 }
 
 onMounted(async () => {
@@ -74,7 +74,7 @@ onMounted(async () => {
                 {{subtitle.subtitle}}
               </div>
               <Button :pt="{label: {class: '!text-xs'}}"
-                      size="small" :label="getDuration(subtitle.raw_recognition)" severity="secondary"
+                      size="small" :label="getStartTime(subtitle.raw_recognition)" severity="secondary"
                       class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
               ></Button>
             </div>

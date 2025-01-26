@@ -23,6 +23,7 @@ import {getNetwork, NetworkRequest, NetworkResponse} from "../apis.ts";
 import {Lecture} from "../types.ts";
 import {useRouter} from "vue-router";
 import Loading from "../components/Loading.vue";
+import { useJump } from '../utils/useJump.ts';
 
 use([
   TooltipComponent,
@@ -48,6 +49,8 @@ const loading = ref(false);
 
 const router = useRouter();
 
+const jump = useJump();
+
 const getResponse = async () => {
   const caches = await readAllCache()
   const requests = caches.filter(cache => cache.points && cache.points.length > 0)
@@ -63,9 +66,13 @@ const getResponse = async () => {
   return await getNetwork({lectures: requests} as NetworkRequest);
 }
 
-const handleClick = (params: any) => {
+const handleClick = async (params: any) => {
   if (params?.data?.route) {
-    router.push(params.data.route)
+    if (params?.data?.route.point) {
+      await jump.jumpToNote(params.data.route.id, params.data.route.point);
+    } else {
+      await jump.jumpToNote(params.data.route.id);
+    }
   }
 
 }
@@ -96,7 +103,7 @@ onMounted(async () => {
       },
       data: data.value.nodes?.map(node => {
         return {
-          id: node.idx,
+          // id: node.idx,
           name: node.name,
           symbolSize: node.size * 10,
           category: node.category,
@@ -134,10 +141,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
-  <div id="container">
-    <v-chart id="chart" ref="chart" @click="handleClick" :options="chartOptions" auto-resize/>
+  <div>
+    <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
+    <div class="w-full h-screen">
+      <v-chart id="chart" ref="chart" @click="handleClick" :options="chartOptions" auto-resize/>
+    </div>
+    <Button class="!fixed !top-4 !left-4" severity="secondary" icon="pi pi-home" rounded @click="router.push('/')"></Button>
   </div>
+  
+  
 
 </template>
 
@@ -146,10 +158,5 @@ onMounted(async () => {
   height: 100vh;
   width: 100%;
   position: relative;
-}
-
-#container {
-  height: 100vh;
-  width: 100%;
 }
 </style>

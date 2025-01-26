@@ -43,9 +43,9 @@ const jumpTo = (name: string, level: number) => {
   if (level === 0) {
     return;
   } else if (level === 1) {  // query
-    jump.jumpToLevelOne(id, name)
+    jump.jumpToNote(id, name)
   } else if (level === 2) {  // hash
-    jump.jumpToLevelOne(id, name)
+    jump.jumpToNote(id, name)
     // TODO: 跳转二级知识点
   }
 }

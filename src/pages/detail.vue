@@ -18,11 +18,9 @@
         </div>
       </nav>
       <div class="p-4">
-        <button
-            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
-            @click="router.push('/')">
-          返回主页
-        </button>
+        <Button severity="secondary" icon="pi pi-home" label="返回主页" class="w-full" :pt="{ root: '!bg-black/20 hover:!bg-black/50 !transition' }"
+          @click="router.push('/')"
+        ></Button>
       </div>
     </aside>
 

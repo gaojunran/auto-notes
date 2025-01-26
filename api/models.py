@@ -15,6 +15,10 @@ class Subtitle(BaseModel):
     md: str
     raw_recognition: list[RawRecognition]
 
+class NoteRoute(BaseModel):
+    id: int
+    point: str | None = None
+
 class Point(BaseModel):
     name: str
     importance: int = Field(ge=1, le=5)
@@ -27,18 +31,19 @@ class NodeCategory(BaseModel):
     name: str
 
 class NodeLink(BaseModel):
-    source: int
-    target: int
+    source: str
+    target: str
     weight: int = Field(ge=1, le=5)
 
 class Node(BaseModel):
-    idx: int
+    idx: int | None = None
     name: str
     category: int
     size: int = Field(ge=1, le=5)
-    route: str = Field(pattern=r'/detail/notes/\d+.*')
+    route: NoteRoute
 
 class Lecture(BaseModel):
     id: int
     topic: str
     points: list[Point]
+

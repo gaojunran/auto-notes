@@ -3,7 +3,7 @@ import time
 from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
 
-from models import RawRecognition, Point, Link, Subtitle, Lecture, Node, NodeLink, NodeCategory
+from models import NoteRoute, RawRecognition, Point, Link, Subtitle, Lecture, Node, NodeLink, NodeCategory
 
 app = FastAPI()
 
@@ -100,17 +100,17 @@ async def get_network(network: NetworkRequest):
     time.sleep(2)  # 模拟延时
     return NetworkResponse(
         nodes=[
-            Node(idx=0, name="布尔代数", category=0, size=5, route="/detail/notes/123"), # topic
-            Node(idx=1, name="命题的真值表", category=0, size=1, route="/detail/notes/123?point=命题的真值表"), # point
-            Node(idx=2, name="真值", category=0, size=4, route="/detail/notes/123?point=真值"), # point
-            Node(idx=3, name="另一个point", category=1, size=2, route="/detail/notes/456?point=另一个point"), # point
-            Node(idx=4, name="另一个topic", category=1, size=5, route="/detail/notes/456"), # topic
+            Node(name="布尔代数", category=0, size=5, route=NoteRoute(id=1737889928)), # topic
+            Node(name="真值表", category=0, size=1, route=NoteRoute(id=1737889928, point="真值表")), # point
+            Node(name="真值", category=0, size=4, route=NoteRoute(id=1737889928, point="真值")), # point
+            Node(name="另一个point", category=1, size=2, route=NoteRoute(id=123, point="另一个point")), # point
+            Node(name="另一个topic", category=1, size=5, route=NoteRoute(id=123)), # topic
         ],
         links=[
-            NodeLink(source=0, target=1, weight=1),
-            NodeLink(source=0, target=2, weight=2),
-            NodeLink(source=1, target=3, weight=1),
-            NodeLink(source=4, target=3, weight=4),
+            NodeLink(source="布尔代数", target="真值表", weight=1),
+            NodeLink(source="布尔代数", target="真值", weight=2),
+            NodeLink(source="真值表", target="另一个point", weight=1),
+            NodeLink(source="另一个topic", target="另一个point", weight=4),
         ],
         categories=[
             NodeCategory(idx=0, name="布尔代数"),
