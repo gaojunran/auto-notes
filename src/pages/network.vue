@@ -40,7 +40,7 @@ type EChartsOption = ComposeOption<
   | GraphSeriesOption
 >;
 
-const data = ref<NetworkResponse>({});
+const data = ref<NetworkResponse>();
 const chartOptions = ref<EChartsOption>();
 const chart = ref<any>();
 
@@ -55,7 +55,7 @@ const getResponse = async () => {
       return {
         id: cache.id,
         topic: cache.topic,
-        points: cache.points.map(point => {
+        points: cache.points!!.map(point => {
           return {name: point.name, importance: point.importance}
         })
       } as Lecture;

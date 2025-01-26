@@ -1,5 +1,5 @@
 import {load} from "@tauri-apps/plugin-store";
-import {Cache} from "../types.ts";
+import {Cache, NodeLink} from "../types.ts";
 import {EChartsOption} from "echarts";
 
 const EXAMPLE_CACHE: Cache[] = [
@@ -110,4 +110,16 @@ export const loadChartCache = async () => {
 
 export const updateChartCache = async (cache: EChartsOption) => {
     await store.set('chart', cache);
+}
+
+export const getUserLinkCache = async () => {
+    const cache = await store.get<NodeLink[]>('userLink');
+    if (!cache) {
+        return null;
+    }
+    return cache;
+}
+
+export const updateUserLinkCache = async (links: NodeLink[]) => {
+    await store.set('userLink', links);
 }

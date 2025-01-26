@@ -39,7 +39,7 @@
 
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import {PlayCircle, BookOpen, HelpCircle, PenTool} from 'lucide-vue-next';
+import {PlayCircle, BookOpen, HelpCircle, PenTool, LinkIcon} from 'lucide-vue-next';
 import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
 
@@ -51,8 +51,8 @@ const type = computed(() => route.fullPath.split('/')[2]);
 const menuItems = ref([
   {name: '课堂回放', icon: PlayCircle, href: `/detail/recognition/${id}`},
   {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}/overview`},
-  {name: '思考题', icon: HelpCircle, href: `/detail/thought/${id}`},
-  {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`},
+  {name: '建立关系', icon: LinkIcon, href: `/detail/connect`},
+  // {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`},
 ]);
 
 menuItems.value.forEach(item => {

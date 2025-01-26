@@ -11,7 +11,7 @@ const router = useRouter();
 const loading = ref(false);
 
 const handleUpload = async (event: FileUploadUploaderEvent) => {
-  const file = event.files[0];
+  const file = (event.files as File[])[0];
   loading.value = true;
   const formData = new FormData();
   formData.append("file", file);
@@ -30,7 +30,7 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
     <div>
       <FileUpload
           choose-label="选择音频文件" upload-label="上传" cancel-label="取消"
-          accept="audio/*"
+          accept=""
           custom-upload
           @uploader="handleUpload"
           :pt="{
@@ -55,5 +55,4 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
       <Loading v-model="loading" title="文件上传中，请稍等..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     </div>
   </div>
-
 </template>
