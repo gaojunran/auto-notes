@@ -7,8 +7,7 @@ import {Timeline} from "primevue";
 import {readCache, updateCache} from "../../../utils/cache.ts";
 import {useJump} from "../../../utils/useJump.ts";
 
-const id = Number(useRoute().params?.id || 0);
-const router = useRouter();
+const id = Number((useRoute().params as { id: string }).id);
 const recognition = ref([] as RawRecognition[]);
 
 const jump = useJump();

@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 //@ts-ignore
 import MarkDown from "vue3-markdown-it";
 import {useRoute, useRouter} from "vue-router";
-import {formatTime, info} from "../../../../utils/utils.ts";
+import {formatTime} from "../../../../utils/utils.ts";
 import Loading from "../../../../components/Loading.vue";
 import {Point, RawRecognition} from "../../../../types.ts";
 import {Divider, Popover} from "primevue";
@@ -13,7 +13,7 @@ import {useJump} from "../../../../utils/useJump.ts";
 import KateX from "@vscode/markdown-it-katex"
 import EditNotes from "../../../../components/EditNotes.vue";
 
-const id = Number(useRoute().params.id);
+const id = Number((useRoute().params as { id: string }).id);
 const loading = ref(false);
 
 const points = ref([] as Point[])
@@ -43,7 +43,7 @@ const getStartTime = (recognitions: RawRecognition[]) => {
 
 onMounted(async () => {
   const cache = await readCache(id)
-  if (cache.points?.length > 0) { // use cache if exists
+  if (cache?.points?.length) { // use cache if exists
     points.value = cache.points;
   } else {   // request from server
     loading.value = true;
@@ -56,7 +56,7 @@ onMounted(async () => {
     loading.value = false;
     await updateCache(id, {points: points.value})
   }
-  currentPoint.value = points.value.find((point) => point.name === route.query.point);
+  currentPoint.value = points.value.find((point) => point.name === route.query.point) ?? points.value[0];
 });
 
 </script>
@@ -64,10 +64,10 @@ onMounted(async () => {
 <template>
   <div class="h-full">
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
-    <EditNotes v-if="currentPoint.name" :point-name="currentPoint.name" :subtitles="currentPoint.subtitles" v-model:show="showEditNotes" ></EditNotes>
+    <EditNotes v-if="currentPoint.name && currentPoint.subtitles" :point-name="currentPoint.name" :subtitles="currentPoint.subtitles" v-model:show="showEditNotes" ></EditNotes>
     <div class="flex flex-col h-full">
       <div id="main" class="flex-1">
-        <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name">
+        <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name" :id="subtitle.name">
           <div class="flex">
             <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
               <div>

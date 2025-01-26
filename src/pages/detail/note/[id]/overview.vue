@@ -4,33 +4,37 @@ import {computed, onMounted, ref} from "vue";
 import Loading from "../../../../components/Loading.vue";
 import {getNote} from "../../../../apis.ts";
 import {Point} from "../../../../types.ts";
-import {useRoute, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {OrganizationChart} from "primevue";
 import {Cache} from "../../../../types.ts";
-import {readCache, setShouldUpdateChart, updateCache} from "../../../../utils/cache.ts";
+import {readCache, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
 
 const loading = ref(false);
 const points = ref([] as Point[])
-const id = Number(useRoute().params.id);
+const id = Number((useRoute().params as {id: string}).id);
 
-const router = useRouter();
 const cache = ref({} as Cache)
 
 const jump = useJump();
 
 const org = computed(() => {
   return {
+    key: "root",
     label: cache.value.topic,
     level: 0,
     children: points.value.map(point => {
       return {
+        key: point.name,
+        point: point.name,
         label: point.name,
         level: 1,
-        children: point.subtitles.map(subtitle => {
+        children: point?.subtitles?.map(subtitle => {
           return {
+            key: subtitle.subtitle,
+            point: point.name,
+            subtitle: subtitle.subtitle,
             label: subtitle.subtitle,
-            parent: point.name,
             level: 2,
           }
         })
@@ -39,20 +43,19 @@ const org = computed(() => {
   }
 })
 
-const jumpTo = (name: string, level: number) => {
-  if (level === 0) {
+const jumpTo = (point?: string, subtitle?: string) => {
+  if (!point && !subtitle) {
     return;
-  } else if (level === 1) {  // query
-    jump.jumpToNote(id, name)
-  } else if (level === 2) {  // hash
-    jump.jumpToNote(id, name)
-    // TODO: 跳转二级知识点
+  } else if (point && !subtitle) {  // level == 1
+    jump.jumpToNote(id, point)
+  } else {  // level == 2
+    jump.jumpToNote(id, point, subtitle)
   }
 }
 
 onMounted(async () => {
   cache.value = await readCache(id)
-  if (cache.value.points?.length > 0) { // use cache if exists
+  if (cache.value?.points?.length) { // use cache if exists
     points.value = cache.value.points;
   } else {   // request from server
     loading.value = true;
@@ -74,7 +77,7 @@ onMounted(async () => {
     <div class="font-bold text-lg">本课思维导图</div>
     <OrganizationChart :value="org">
       <template #default="slotProps">
-        <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.level === 2 ? slotProps.node.parent : slotProps.node.label, slotProps.node.level)"/>
+        <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.point, slotProps.node.subtitle)"/>
       </template>
     </OrganizationChart>
   </div>

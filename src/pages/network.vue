@@ -42,7 +42,7 @@ type EChartsOption = ComposeOption<
 >;
 
 const data = ref<NetworkResponse>();
-const chartOptions = ref<EChartsOption>();
+const chartOptions = ref<EChartsOption | null>(null);
 const chart = ref<any>();
 
 const loading = ref(false);

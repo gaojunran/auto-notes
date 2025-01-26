@@ -4,8 +4,10 @@ import {useRouter} from "vue-router";
 export function useJump() {
   const router = useRouter();
 
-  const jumpToNote = async (id: number, point?: string) => {
-    if (point) {
+  const jumpToNote = async (id: number, point?: string, subtitle?: string) => {
+    if (point && subtitle) {
+      await router.push({path: `/detail/note/${id}`, query: {point}, hash: `#${subtitle}`})
+    } else if (point) {
       await router.push({path: `/detail/note/${id}`, query: {point}})
     } else {
       await router.push({path: `/detail/note/${id}/overview`})

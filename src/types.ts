@@ -1,4 +1,4 @@
-import {NoteResponse, Question, RecordResponse} from "./apis.ts";
+import {NoteResponse, RecordResponse} from "./apis.ts";
 
 // export interface CourseProps {
 //     id: number;

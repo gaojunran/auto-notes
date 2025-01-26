@@ -30,7 +30,7 @@ export interface NoteRequest {
      * 课程摘要
      */
     abstract: string;
-    raw_recognition: RawRecognition;
+    raw_recognition: RawRecognition[];
     /**
      * 课程主题
      */
@@ -70,25 +70,25 @@ export interface NetworkResponse {
 
 
 export const testConnection = async () => {
-    const response = await request("/test", "GET")
+    const response = (await request("/test", "GET")) as unknown as string;
     return response === "Hello, World!";
 }
 
 export const postRecord = async (record: FormData) => {
-    const response: RecordResponse = await request("/record", "POST", record,{
+    const response = await request("/record", "POST", record,{
         'Content-Type': "multipart/form-data; boundary=--------------------------061678868844241685450298",
         "Accept": "*/*"})
-    return response;
+    return response as unknown as RecordResponse;
 }
 
 export const getNote = async (note: NoteRequest) => {
-    const response: NoteResponse = await request("/note", "POST", note)
-    return response;
+    const response = await request("/note", "POST", note)
+    return response as unknown as NoteResponse;
 }
 
 export const getNetwork = async (req: NetworkRequest) => {
-    const response: NetworkResponse = await request("/network", "POST", req)
-    return response;
+    const response = await request("/network", "POST", req)
+    return response as unknown as NetworkResponse;
 }
 
 

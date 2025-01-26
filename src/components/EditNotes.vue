@@ -6,9 +6,9 @@ const props = defineProps<{
   subtitles: Subtitle[];
 }>()
 
-const id = Number(useRoute().params.id);
+const id = Number((useRoute().params as { id: string }).id);
 
-const show = defineModel('show')
+const show = defineModel('show', { type: Boolean, default: false })
 
 import {Dialog, Textarea, SelectButton} from "primevue";
 import {Subtitle} from "../types.ts";

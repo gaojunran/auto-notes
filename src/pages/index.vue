@@ -47,13 +47,12 @@
   </template>
 
   <script setup lang="ts">
-    import { MicIcon, UploadIcon, NetworkIcon } from 'lucide-vue-next'
+    import { UploadIcon, NetworkIcon } from 'lucide-vue-next'
     import {useRouter} from "vue-router";
     import {onMounted, ref} from "vue";
-    import { load } from '@tauri-apps/plugin-store';
     import { Cache } from "../types.js";
     import HistoryCard from "../components/HistoryCard.vue";
-    import {readAllCache, readCache} from "../utils/cache.ts";
+    import { readAllCache } from "../utils/cache.ts";
 
     const router = useRouter()
     const histories = ref([] as Cache[])
