@@ -90,10 +90,12 @@ export const deleteCache = async (id: number) => {
 export const clearCache = async () => {
     await store.set('cache', []);
     await store.set('chart', null);
+    await store.set('shouldUpdateChart', true);
+    await store.set('userLink', []);
 }
 
 export const getShouldUpdateChart = async () => {
-    return await store.get<boolean>('shouldUpdateChart') || true;
+    return await store.get<boolean>('shouldUpdateChart') ?? true;
 }
 
 export const setShouldUpdateChart = async (shouldUpdate: boolean = true) => {

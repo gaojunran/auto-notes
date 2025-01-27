@@ -80,6 +80,7 @@ const handleClick = async (params: any) => {
 onMounted(async () => {
   if (!await getShouldUpdateChart()) {
     chartOptions.value = await loadChartCache();
+    chart.value.setOption(chartOptions.value);
     return;
   }
   loading.value = true;
