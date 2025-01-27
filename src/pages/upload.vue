@@ -27,7 +27,8 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
 
 <template>
   <div class="w-full min-h-screen flex items-center justify-center">
-    <div>
+    <Button class="!fixed !top-4 !left-4" severity="secondary" icon="pi pi-home" rounded @click="router.push('/')"></Button>
+    <div class="w-2/3">
       <FileUpload
           choose-label="选择音频文件" upload-label="上传" cancel-label="取消"
           accept=""
@@ -42,13 +43,24 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
               },
               file: {
                 class: 'bg-white/5 rounded'
+              },
+              pcUploadButton: {
+                root: '!flex-1'
+              },
+              pcCancelButton: {
+                root: '!flex-1'
+              }, 
+              pcChooseButton: {
+                root: '!flex-1'
               }
           }"
           :multiple="false"
       >
         <template #empty>
-          <div class="bg-white/5 w-full p-4 rounded">
-            还没有选择文件，快来上传吧！
+          <div class="bg-white/5 w-full p-4 h-48 rounded flex justify-center items-center">
+            <div>
+              还没有选择文件，快来上传吧！
+            </div>
           </div>
         </template>
       </FileUpload>

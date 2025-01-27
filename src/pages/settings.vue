@@ -43,7 +43,7 @@ const clearAllCache = async () => {
           <div class="text-white">若进行了某些错误操作，可尝试：</div>
           <Button severity="warn" icon="pi pi-trash" label="清空缓存" size="small" @click="clearAllCache" />
         </div>
-        <div class="flex items-center mb-4">
+        <div class="flex justify-center items-center mt-2">
           <Button severity="secondary" icon="pi pi-home" label="返回主页" size="small" @click="router.push('/')" />
         </div>
       </div>
