@@ -47,9 +47,11 @@ class NetworkResponse(BaseModel):
     categories: list[NodeCategory]
 
 
-@app.get("/test", response_model=str)
+@app.get("/test")
 async def test():
-    return "Hello, World!"
+    return {
+        "response": "OK"
+    }
 
 
 @app.post("/record", response_model=RecordResponse)

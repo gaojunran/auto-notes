@@ -28,4 +28,5 @@ tauri-plugin-fs = "2"
 tauri-plugin-os = "2"
 tauri-plugin-log = "2"
 tauri-plugin-localhost = "2"
+tauri-plugin-http = { version = "2.3.0", features = ["unsafe-headers"] }
 

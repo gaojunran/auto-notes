@@ -1,6 +1,11 @@
 import request from "./request.ts";
 import {NodeCategory, NodeLink, Node, Point, RawRecognition, Lecture} from "./types.ts";
 
+export interface TestResponse {
+    response: string;
+    [property: string]: any;
+}
+
 export interface RecordResponse {
     /**
      * 课程摘要，长度大约为2行。
@@ -70,25 +75,23 @@ export interface NetworkResponse {
 
 
 export const testConnection = async () => {
-    const response = (await request("/test", "GET")) as unknown as string;
-    return response === "Hello, World!";
+    const response = (await request("/test", "GET")) as TestResponse;
+    return response.response === "OK";
 }
 
 export const postRecord = async (record: FormData) => {
-    const response = await request("/record", "POST", record,{
-        'Content-Type': "multipart/form-data; boundary=--------------------------061678868844241685450298",
-        "Accept": "*/*"})
-    return response as unknown as RecordResponse;
+    const response = await request("/record", "POST", null, record, {})  // headers will be auto-generated
+    return response as RecordResponse;
 }
 
 export const getNote = async (note: NoteRequest) => {
     const response = await request("/note", "POST", note)
-    return response as unknown as NoteResponse;
+    return response as NoteResponse;
 }
 
 export const getNetwork = async (req: NetworkRequest) => {
     const response = await request("/network", "POST", req)
-    return response as unknown as NetworkResponse;
+    return response as NetworkResponse;
 }
 
 

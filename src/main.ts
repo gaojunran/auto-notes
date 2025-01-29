@@ -10,6 +10,7 @@ import Aura from '@primevue/themes/aura';
 import {definePreset} from "@primevue/themes";
 import ToastService from 'primevue/toastservice';
 import MarkDown from 'vue3-markdown-it'
+import {error} from '@tauri-apps/plugin-log'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -61,8 +62,9 @@ app.use(router)
 
 
 app.config.errorHandler = async (err, vm, info) => {
-    console.error(err, vm, info);
-    await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: (err as { message?: string })?.message || "未知错误，请联系管理员" });
+    console.error(err, vm, info);  // log to console
+    error(JSON.stringify({err, vm, info}));  // log to tauri console
+    await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: (err as { message?: string })?.message || "未知错误，请联系管理员" }); // display toast
 }
 
 app.mount("#app");

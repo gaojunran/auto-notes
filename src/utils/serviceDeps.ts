@@ -5,7 +5,7 @@ import {testConnection} from "../apis.ts";
 import {platform} from "@tauri-apps/plugin-os";
 import {success} from "./utils.ts";
 import {load} from "@tauri-apps/plugin-store";
-import {error, info} from "@tauri-apps/plugin-log"
+import {info} from "@tauri-apps/plugin-log"
 
 const store = await load('store.json', {autoSave: true});
 
@@ -77,9 +77,9 @@ export const bootService = async (loading: Ref<boolean>) => {
     command.on('close', (data) => {
         console.log(`command finished with code ${data.code} and signal ${data.signal}`)
     });
+
     command.on('error', (err) => {
-        console.error(`command error: "${err}"`);
-        error(err);
+        throw new Error(`command error: "${err}"`);
     });
 
     command.stdout.on('data', line => {
@@ -88,8 +88,7 @@ export const bootService = async (loading: Ref<boolean>) => {
     });
     
     command.stderr.on('data', line => {
-        console.log(`command stderr: "${line}"`);
-        error(line);
+        throw new Error(`command stderr: "${line}"`);
     });
 
     await command.spawn();
