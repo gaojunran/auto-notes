@@ -132,7 +132,7 @@ export const updateChartCache = async (cache: EChartsOption) => {
 export const getUserLinkCache = async () => {
     const cache = await store.get<NodeLink[]>('userLink');
     if (!cache) {
-        return null;
+        return [];
     }
     return cache;
 }

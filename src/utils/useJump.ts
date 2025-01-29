@@ -15,7 +15,7 @@ export function useJump() {
   }
   
   const jumpToRecognition = async (id: number, start: number) => {
-    await router.push({path: `/detail/recognition/${id}`, hash: `time-${start}`})
+    await router.push({path: `/detail/recognition/${id}`, hash: `#time-${start}`})
   }
 
   return {jumpToNote, jumpToRecognition}

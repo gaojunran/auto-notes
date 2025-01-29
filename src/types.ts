@@ -157,11 +157,9 @@ export interface Node {
      */
     name: string;
     /**
-     * 节点路由, 用于点击按钮跳转到前端指定的页面。格式如下（以下使用Python的f-string语法）：
-     * 对于topic来说：f"/detail/notes/{id}"，其中id为课程id，不是节点id。
-     * 对于point来说：f"/detail/notes/{id}?point={name}"，其中id为课程id，name为知识点名称。
+     * 节点路由, 用于点击按钮跳转到前端指定的页面。
      */
-    route: string;
+    route: NoteRoute;
     /**
      * 节点大小, （待定）对于topic来说固定为5，对于point来说为其importance，即1-5.
      */
