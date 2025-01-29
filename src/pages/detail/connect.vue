@@ -81,6 +81,7 @@ onMounted(async () => {
   }
   loading.value = true;
   data.value = await getResponse();
+  const userLinks = await getUserLinkCache();
   chartOptions.value = {
     tooltip: {},
     legend: [
@@ -108,7 +109,7 @@ onMounted(async () => {
           route: node.route,
         }
       }),
-      links: data.value.links?.map(link => {
+      links: data.value.links?.concat(userLinks)?.map(link => {
         return {
           source: link.source,
           target: link.target,
