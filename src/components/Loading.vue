@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {Dialog, ProgressSpinner} from "primevue";
 
-const loading = defineModel();
+const loading = defineModel<boolean>();
 
 const props = defineProps({
   title: String,

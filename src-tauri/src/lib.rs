@@ -1,4 +1,6 @@
-use tauri::Manager;
+use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
+
+
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -21,7 +23,28 @@ fn check(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error + 'static
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+
+    let port: u16 = 1420;
+
     tauri::Builder::default()
+
+        .plugin(tauri_plugin_localhost::Builder::new(port).build())
+        .setup(move |app| {
+          let url = format!("http://localhost:{}", port).parse().unwrap();
+          WebviewWindowBuilder::new(app, "main".to_string(), WebviewUrl::External(url))
+              .title("Localhost Example")
+              .build()?;
+          Ok(())
+      })
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .target(tauri_plugin_log::Target::new(
+                    tauri_plugin_log::TargetKind::LogDir {
+                        file_name: Some("logs".to_string()),
+                    },
+                ))
+                .build(),
+        )
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_shell::init())

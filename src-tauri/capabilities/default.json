@@ -37,7 +37,6 @@
           "cmd": "winget",
           "args": true
         },
-
         {
           "name": "./uv_macos.sh",
           "cmd": "./uv_macos.sh",
@@ -52,6 +51,7 @@
     },
     "fs:default",
     "fs:default",
-    "os:default"
+    "os:default",
+    "log:default"
   ]
 }

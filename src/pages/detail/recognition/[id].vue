@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {computed, onMounted, ref} from "vue";
-import {formatTime, info} from "../../../utils/utils.ts";
+import {formatTime} from "../../../utils/utils.ts";
 import {RawRecognition} from "../../../types.ts";
 import {Timeline} from "primevue";
 import {readCache, updateCache} from "../../../utils/cache.ts";

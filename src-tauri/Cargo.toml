@@ -26,4 +26,6 @@ tauri-plugin-store = "2"
 tauri-plugin-shell = "2"
 tauri-plugin-fs = "2"
 tauri-plugin-os = "2"
+tauri-plugin-log = "2"
+tauri-plugin-localhost = "2"
 

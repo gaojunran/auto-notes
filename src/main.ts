@@ -5,7 +5,7 @@ import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import PrimeVue from 'primevue/config';
-import {FileUpload, Button, Menu, useToast, Toast, ToastEventBus} from "primevue";
+import {FileUpload, Button, Menu, Toast, ToastEventBus} from "primevue";
 import Aura from '@primevue/themes/aura';
 import {definePreset} from "@primevue/themes";
 import ToastService from 'primevue/toastservice';
@@ -13,7 +13,7 @@ import MarkDown from 'vue3-markdown-it'
 
 const router = createRouter({
     history: createWebHistory(),
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior(to) {
         if (to.hash) {
             return {
                 el: to.hash,
@@ -62,7 +62,7 @@ app.use(router)
 
 app.config.errorHandler = async (err, vm, info) => {
     console.error(err, vm, info);
-    await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: err?.message || "未知错误，请联系管理员" });
+    await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: (err as { message?: string })?.message || "未知错误，请联系管理员" });
 }
 
 app.mount("#app");

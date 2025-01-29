@@ -42,7 +42,7 @@ type EChartsOption = ComposeOption<
 >;
 
 const data = ref<NetworkResponse>();
-const chartOptions = ref<EChartsOption | null>(null);
+const chartOptions = ref<any>(null);
 const chart = ref<any>();
 
 const loading = ref(false);
@@ -131,7 +131,7 @@ onMounted(async () => {
         repulsion: 500
       }
     }]
-  }
+  } as EChartsOption;
   chart.value.setOption(chartOptions.value);
   loading.value = false;
   await updateChartCache(chartOptions.value);

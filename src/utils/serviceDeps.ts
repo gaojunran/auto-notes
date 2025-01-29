@@ -5,6 +5,7 @@ import {testConnection} from "../apis.ts";
 import {platform} from "@tauri-apps/plugin-os";
 import {success} from "./utils.ts";
 import {load} from "@tauri-apps/plugin-store";
+import {error, info} from "@tauri-apps/plugin-log"
 
 const store = await load('store.json', {autoSave: true});
 
@@ -49,6 +50,7 @@ export const installUv = async (loading: Ref<boolean>) => {
             throw new Error(rs1.stderr)
         }
         console.log(rs1.stdout)
+        info(rs1.stdout)
     }
 
     const rs2 = await Command.create(script[0], script.slice(1), {cwd: apiPath}).execute()
@@ -57,6 +59,7 @@ export const installUv = async (loading: Ref<boolean>) => {
         throw new Error(rs2.stderr)
     }
     console.log(rs2.stdout)
+    info(rs2.stdout)
     loading.value = false
     await success("依赖安装成功！")
 }
@@ -71,12 +74,23 @@ export const bootService = async (loading: Ref<boolean>) => {
         }
     });
 
-    command.on('close', data => {
+    command.on('close', (data) => {
         console.log(`command finished with code ${data.code} and signal ${data.signal}`)
     });
-    command.on('error', error => console.error(`command error: "${error}"`));
-    command.stdout.on('data', line => console.log(`command stdout: "${line}"`));
-    command.stderr.on('data', line => console.log(`command stderr: "${line}"`));
+    command.on('error', (err) => {
+        console.error(`command error: "${err}"`);
+        error(err);
+    });
+
+    command.stdout.on('data', line => {
+        console.log(`command stdout: "${line}"`);
+        info(line);
+    });
+    
+    command.stderr.on('data', line => {
+        console.log(`command stderr: "${line}"`);
+        error(line);
+    });
 
     await command.spawn();
 

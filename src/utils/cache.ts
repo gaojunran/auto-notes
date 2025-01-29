@@ -1,36 +1,51 @@
-import {load} from "@tauri-apps/plugin-store";
+import {load, Store} from "@tauri-apps/plugin-store";
 import {Cache, NodeLink} from "../types.ts";
 import {EChartsOption} from "echarts";
 
 const EXAMPLE_CACHE: Cache[] = [
     {
-        id: 1,
-        tags: ['数据结构', 'ICSI213'],
+        id: 12345677,
+        tags: ['离散结构', 'ICSI210'],
         duration: 3421,
-        abstract: '这节课主要讲了关于栈和队列的理论知识。',
-        topic: '栈和队列',
+        abstract: '这节课主要讲了关于布尔代数的知识。',
+        topic: '布尔代数',
         raw_recognition: [
-            {start: 0, end: 12, text: '这节课主要讲了关于栈和队列的理论知识。'},
-            {start: 13, end: 25, text: '栈和队列是两种基本的数据结构。'},
-            {start: 26, end: 39, text: '栈是一种线性数据结构，它遵循后进先出（LIFO）的原则。'},
-            {start: 40, end: 52, text: '队列是一种线性数据结构，它遵循先进先出（FIFO）的原则。'},
-            {start: 53, end: 65, text: '栈和队列的操作主要包括入栈、出栈、查看栈顶元素、判断栈是否为空、判断队列是否为空。'},
-            {
-                start: 66,
-                end: 78,
-                text: '栈和队列的应用主要包括表达式求值、函数调用栈、浏览器前进后退、打印机打印任务队列等。'
-            },
-            {start: 79, end: 91, text: '栈和队列的实现主要基于数组和链表。'},
-            {start: 92, end: 104, text: '栈和队列的分析主要基于时间复杂度、空间复杂度、稳定性、并发性等。'},
-            {
-                start: 105,
-                end: 117,
-                text: '栈和队列的应用举例主要包括进制转换、括号匹配、表达式求值、函数调用栈、浏览器前进后退、打印机打印任务队列等。'
-            },
+                {
+                    "start": 0,
+                    "end": 12,
+                    "text": "什么是布尔值？"
+                },
+                {
+                    "start": 13,
+                    "end": 25,
+                    "text": "布尔值有什么用？"
+                },
+                {
+                    "start": 26,
+                    "end": 30,
+                    "text": "布尔值有哪两种？"
+                },
+                {
+                    "start": 31,
+                    "end": 40,
+                    "text": "什么是命题真值？"
+                },
+                {
+                    "start": 41,
+                    "end": 50,
+                    "text": "什么是真值表？"
+                },
+                {
+                    "start": 51,
+                    "end": 60,
+                    "text": "真值表有什么用？"
+                }
         ],
     }
 ];
-const store = await load('store.json', {autoSave: true});
+
+const store: Store = await load('store.json', {autoSave: true});
+
 export const readAllCache = async () => {
     let cache = await store.get<Cache[]>('cache');
     if (!cache || cache.length === 0) {
@@ -60,13 +75,13 @@ export const updateCache = async (id: number, kv: object) => {
 
 export const updatePointCache = async (id: number, pointName: string, kv: object) => {
     const cache = await readCache(id);
-    let point = cache.points.find(p => p.name === pointName);
-    const pointIndex = cache.points.findIndex(p => p.name === pointName);
-    if (!point) {
+    let point = cache?.points?.find(p => p.name === pointName);
+    const pointIndex = cache?.points?.findIndex(p => p.name === pointName) || -1;
+    if (!point || pointIndex === -1) {
         throw new Error('Point not found');
     }
     point = {...point, ...kv};
-    cache.points[pointIndex] = point;
+    cache.points!![pointIndex] = point;
     await updateCache(id, {points: cache.points});
 }
 

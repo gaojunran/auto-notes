@@ -3,7 +3,6 @@ import {onMounted, ref} from "vue";
 import Loading from "./components/Loading.vue";
 import {bootService, checkUvInstalled, installUv} from "./utils/serviceDeps.ts";
 const loading = ref(false)
-const result = ref("")
 let tried = false;
 
 onMounted(async () => {
