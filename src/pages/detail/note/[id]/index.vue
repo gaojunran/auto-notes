@@ -90,7 +90,7 @@ onMounted(async () => {
         <i class="pi pi-star-fill text-yellow-500" v-for="i in currentPoint.importance || 0" :key="i" />
         <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
       </div>
-      <div id="points" class="w-full rounded mb-2 flex justify-start items-center gap-4 flex-0">
+      <div id="points" class="w-full rounded mb-2 flex flex-wrap justify-start items-center gap-4 flex-0">
         <Button @click="navigateToOverview" label="总览" icon="pi pi-book" size="small" severity="secondary"></Button>
         <Button @click="showEditNotes = true" label="编辑笔记" icon="pi pi-pencil" size="small" severity="secondary"></Button>
         <Button label="相关链接" severity="secondary" size="small" icon="pi pi-link"

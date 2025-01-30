@@ -140,3 +140,11 @@ export const getUserLinkCache = async () => {
 export const updateUserLinkCache = async (links: NodeLink[]) => {
     await store.set('userLink', links);
 }
+
+export const getFakeService = async () => {
+    return await store.get<boolean>('fakeService') ?? false;
+}
+
+export const setFakeService = async (fake: boolean) => {
+    await store.set('fakeService', fake);
+}

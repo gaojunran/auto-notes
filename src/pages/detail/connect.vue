@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { getShouldUpdateChart, getUserLinkCache, loadChartCache, readAllCache, setShouldUpdateChart, updateChartCache, updateUserLinkCache } from '../../utils/cache';
 import { getNetwork, NetworkRequest, NetworkResponse } from '../../apis';
 import { Lecture, NodeLink, Node } from '../../types';
-import { EChartsOption } from 'echarts';
+import { color, EChartsOption } from 'echarts';
 import { DataTable, Column } from 'primevue';
 
 const getResponse = async () => {
@@ -61,7 +61,10 @@ const saveNewLink = async (source: string, target: string, weight: number) => {
     if (source === target) {
         throw new Error('源节点和目标节点不能相同');
     }
-    const link = {source, target, weight, isUserGenerated: true} as NodeLink;
+    const link = {source, target, weight, 
+      isUserGenerated: true, 
+      lineStyle: { width: weight * 2, color: 'yellow' }
+    } as NodeLink;
 
     // 更新userLink ref及缓存
     userLinks.value.push(link);

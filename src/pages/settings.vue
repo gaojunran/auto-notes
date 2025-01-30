@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import {success} from "../utils/utils.ts";
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import Loading from "../components/Loading.vue";
 import {bootService, installUv} from "../utils/serviceDeps.ts";
-import {clearCache} from "../utils/cache.ts";
+import {clearCache, getFakeService, setFakeService} from "../utils/cache.ts";
 import {useRouter} from "vue-router";
+import ToggleSwitch from 'primevue/toggleswitch';
+import { info } from "../utils/utils.ts"
 
 const loading = ref(false)
 const router = useRouter()
+
+const isFakeService = ref(false);
+
+watch(isFakeService, async (newValue, _) => {
+    await setFakeService(newValue);
+    await info("伪造服务端模式已" + (newValue? "开启" : "关闭") + "！")
+})
 
 const reinstallUv = async () => {
   await installUv(loading);
@@ -21,6 +30,10 @@ const clearAllCache = async () => {
   await clearCache();
   await success("缓存清除成功!")
 }
+
+onMounted(async () => {
+  isFakeService.value = await getFakeService();
+})
 </script>
 
 <template>
@@ -43,9 +56,14 @@ const clearAllCache = async () => {
           <div class="text-white">若进行了某些错误操作，可尝试：</div>
           <Button severity="warn" icon="pi pi-trash" label="清空缓存" size="small" @click="clearAllCache" />
         </div>
+        <div class="flex items-center mb-4">
+          <div class="text-white mr-4">伪造服务端模式</div>
+          <ToggleSwitch v-model="isFakeService"></ToggleSwitch>
+        </div>
         <div class="flex justify-center items-center mt-2">
           <Button severity="secondary" icon="pi pi-home" label="返回主页" size="small" @click="router.push('/')" />
         </div>
+
       </div>
     </div>
   </div>
