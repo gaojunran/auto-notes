@@ -6,6 +6,7 @@ import { Lecture, NodeLink, Node } from '../../types';
 import { EChartsOption } from 'echarts';
 import { DataTable, Column, Dialog, Select, Rating } from 'primevue';
 import Loading from '../../components/Loading.vue';
+import { info } from '../../utils/utils';
 
 const getResponse = async () => {
   const caches = await readAllCache()
@@ -31,18 +32,17 @@ const nodes = computed(() => {
     return (chartOptions.value?.series?.[0]?.data?.map(node => node.name) || []) as Node[];
 })
 
-const existingLinks = computed(() => {
+const existingLinks = computed({
+  get() {
     return (chartOptions.value?.series?.[0]?.links as NodeLink[]) || [];
+  },
+  set(val) {
+    chartOptions.value.series[0].links = val;
+  }
+    
 })  // 大模型生成的链接
 
-const userLinks = ref<NodeLink[]>([
-    {
-        source: '真值表',
-        target: '另一个topic',
-        weight: 3,
-        isUserGenerated: true,
-    }
-]); // 用户自定义的链接
+const userLinks = ref<NodeLink[]>([]); // 用户自定义的链接
 
 const allLinks = computed(() => {
     return [...existingLinks.value, ...userLinks.value];
@@ -79,6 +79,18 @@ const saveNewLink = async (source: string, target: string, weight: number) => {
 
     isNewLinkShow.value = false;
 
+}
+
+const removeLink = async (source: string, target: string, isUserGenerated: boolean) => {
+  if (isUserGenerated) {
+    userLinks.value = userLinks.value.filter(link => link.source !== source || link.target !== target);
+    await updateUserLinkCache(userLinks.value);
+  } else {
+    await info("提醒：删除由大模型生成的链接的操作可能会被覆盖！")
+    existingLinks.value = existingLinks.value.filter(link => link.source !== source || link.target !== target);
+    await updateChartCache(chartOptions.value);
+  }
+  
 }
 
 onMounted(async () => {
@@ -189,6 +201,17 @@ const columns = [
             <Column v-for="col in columns" :field="col.field" :header="col.header" sortable
               :pt="{ headerCell: '!bg-black/10 hover:!bg-black/50' }"
             />
+            <Column header="" :pt="{ headerCell: '!bg-black/10 hover:!bg-black/50' }" >
+              <template #body="slotProps">
+                <Button icon="pi pi-trash" outlined severity="danger"
+                  @click="removeLink(slotProps.data.source, slotProps.data.target, slotProps.data.isUserGenerated)"
+                  :pt="{ root: '!border-0 !text-red-500/50 hover:!text-red-500/100 !transition'
+                  }"
+                ></Button>
+              </template>
+            </Column>
+
+            
         </DataTable>
     </div>
     
