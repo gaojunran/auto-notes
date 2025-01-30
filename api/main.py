@@ -19,6 +19,7 @@ async def test(fake: bool = False):
 
 @app.post("/record", response_model=RecordResponse)
 async def post_record(file: UploadFile, fake: bool = False):
+    print(file, fake)
     if fake:
         time.sleep(2)  # 模拟延时
         return RecordResponse.fake()

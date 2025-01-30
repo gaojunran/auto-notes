@@ -61,9 +61,9 @@ app.use(router)
     .component("Menu", Menu)
 
 
-app.config.errorHandler = async (err, vm, info) => {
-    console.error(err, vm, info);  // log to console
-    error(JSON.stringify({err, vm, info}));  // log to tauri console
+app.config.errorHandler = async (err, _, info) => {
+    console.error(err, info);  // log to console
+    error(JSON.stringify({err, info}));  // log to tauri console
     await ToastEventBus.emit('add', { severity: "error", summary: "发生错误", detail: (err as { message?: string })?.message || "未知错误，请联系管理员" }); // display toast
 }
 

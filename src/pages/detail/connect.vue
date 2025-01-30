@@ -3,8 +3,9 @@ import { computed, onMounted, ref } from 'vue';
 import { getShouldUpdateChart, getUserLinkCache, loadChartCache, readAllCache, setShouldUpdateChart, updateChartCache, updateUserLinkCache } from '../../utils/cache';
 import { getNetwork, NetworkRequest, NetworkResponse } from '../../apis';
 import { Lecture, NodeLink, Node } from '../../types';
-import { color, EChartsOption } from 'echarts';
-import { DataTable, Column } from 'primevue';
+import { EChartsOption } from 'echarts';
+import { DataTable, Column, Dialog, Select, Rating } from 'primevue';
+import Loading from '../../components/Loading.vue';
 
 const getResponse = async () => {
   const caches = await readAllCache()
@@ -27,7 +28,7 @@ const data = ref<NetworkResponse>();
 const chartOptions = ref<any>();
 
 const nodes = computed(() => {
-    return (chartOptions.value?.series?.[0]?.data || []) as Node[];
+    return (chartOptions.value?.series?.[0]?.data?.map(node => node.name) || []) as Node[];
 })
 
 const existingLinks = computed(() => {
@@ -49,6 +50,12 @@ const allLinks = computed(() => {
 
 const loading = ref(false);
 
+const isNewLinkShow = ref(false);
+
+const sourceSelect = ref('');
+const targetSelect = ref('');
+const weightInput = ref(1);
+
 const saveNewLink = async (source: string, target: string, weight: number) => {
     if (existingLinks.value.some(link => (link.source === source && link.target === target) || (link.source === target && link.target === source))) {
         throw new Error('知识点链接已存在！');
@@ -69,6 +76,8 @@ const saveNewLink = async (source: string, target: string, weight: number) => {
     // 更新userLink ref及缓存
     userLinks.value.push(link);
     await updateUserLinkCache(userLinks.value);
+
+    isNewLinkShow.value = false;
 
 }
 
@@ -147,9 +156,30 @@ const columns = [
 
 <template>
     <div>
+      <Dialog v-model:visible="isNewLinkShow" modal :style="{ width: '75%' }" header="新增链接">
+        <div class="flex justify-between items-center mb-4 gap-4">
+          <div class="flex justify-start items-center mb-4 gap-8">
+            <div>源节点</div>
+            <Select v-model="sourceSelect" :options="nodes" placeholder="选择一个节点"></Select>
+          </div>
+          <div class="flex justify-start items-center mb-4 gap-6 mr-12">
+            <div>目标节点</div>
+            <Select v-model="targetSelect" :options="nodes" placeholder="选择一个节点"></Select>
+          </div>
+        </div>
+        <div class="flex justify-start items-center mb-4 gap-4">
+          <div>关系权重</div>
+          <Rating v-model="weightInput"></Rating>
+        </div>
+        <template #footer>
+          <Button icon="pi pi-save" label="保存链接" @click="saveNewLink(sourceSelect, targetSelect, weightInput)"></Button>
+        </template>
+        
+      </Dialog>
+      <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
       <div class="flex justify-between items-center mb-6 gap-4">
         <div class="font-bold text-lg">所有知识点链接</div>
-        <Button label="添加链接" icon="pi pi-plus" size="small"></Button>
+        <Button label="添加链接" @click="isNewLinkShow = true" icon="pi pi-plus" size="small"></Button>
       </div>
         
         <DataTable :value="allLinks" removableSort :pt="{
