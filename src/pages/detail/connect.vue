@@ -31,20 +31,15 @@ const nodes = computed(() => {
 })
 
 const existingLinks = computed(() => {
-    return (chartOptions.value?.series?.[0]?.links?.map(link => {
-        return {
-            source: link.source,
-            target: link.target,
-            weight: link.lineStyle.width / 2
-        }
-    }) as NodeLink[]) || [];
+    return (chartOptions.value?.series?.[0]?.links as NodeLink[]) || [];
 })  // 大模型生成的链接
 
 const userLinks = ref<NodeLink[]>([
     {
         source: '真值表',
         target: '另一个topic',
-        weight: 3
+        weight: 3,
+        isUserGenerated: true,
     }
 ]); // 用户自定义的链接
 
@@ -66,7 +61,7 @@ const saveNewLink = async (source: string, target: string, weight: number) => {
     if (source === target) {
         throw new Error('源节点和目标节点不能相同');
     }
-    const link = {source, target, weight} as NodeLink;
+    const link = {source, target, weight, isUserGenerated: true} as NodeLink;
 
     // 更新userLink ref及缓存
     userLinks.value.push(link);
@@ -80,8 +75,7 @@ onMounted(async () => {
     return;
   }
   loading.value = true;
-  data.value = await getResponse();
-  const userLinks = await getUserLinkCache();
+  data.value = await getResponse()
   chartOptions.value = {
     tooltip: {},
     legend: [
@@ -109,10 +103,12 @@ onMounted(async () => {
           route: node.route,
         }
       }),
-      links: data.value.links?.concat(userLinks)?.map(link => {
+      links: data.value.links?.map(link => {
         return {
           source: link.source,
           target: link.target,
+          weight: link.weight, // extra
+          isUserGenerated: false,  // extra
           lineStyle: {
             width: link.weight * 2,
           }
@@ -137,15 +133,29 @@ onMounted(async () => {
 
   loading.value = false;
 });
+
+const columns = [
+  { field: 'source', header: '源节点' },
+  { field: 'target', header: '目标节点' },
+  { field: 'weight', header: '权重' },
+  { field: 'isUserGenerated', header: '※' }
+]
 </script>
 
 <template>
     <div>
-        <div class="font-bold text-lg mb-6">所有知识点链接</div>
-        <DataTable :value="allLinks" :pt="{tableContainer: '!rounded-lg !border !border-white/10 !border-2' ,headerRow: '!bg-black/10', bodyRow: '!bg-black/10'}">
-            <Column field="source" header="源节点" />
-            <Column field="target" header="目标节点" />
-            <Column field="weight" header="权重" />
+      <div class="flex justify-between items-center mb-6 gap-4">
+        <div class="font-bold text-lg">所有知识点链接</div>
+        <Button label="添加链接" icon="pi pi-plus" size="small"></Button>
+      </div>
+        
+        <DataTable :value="allLinks" removableSort :pt="{
+          tableContainer: '!rounded-lg !border !border-white/10 hover:!border-white/40  !border-2 !transition', 
+          bodyRow: '!bg-black/10 hover:!bg-black/30'
+        }">
+            <Column v-for="col in columns" :field="col.field" :header="col.header" sortable
+              :pt="{ headerCell: '!bg-black/10 hover:!bg-black/50' }"
+            />
         </DataTable>
     </div>
     

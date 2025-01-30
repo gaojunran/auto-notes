@@ -137,6 +137,10 @@ export interface NodeLink {
      * 目标节点
      */
     target: string;
+    /**
+     * 
+     */
+    isUserGenerated?: boolean;
     [property: string]: any;
 }
 

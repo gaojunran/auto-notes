@@ -12,6 +12,7 @@ import type {
 } from 'echarts/components';
 import {
   getShouldUpdateChart,
+  getUserLinkCache,
   loadChartCache,
   readAllCache,
   setShouldUpdateChart,
@@ -20,7 +21,7 @@ import {
 import {onMounted, provide, ref} from "vue";
 import VChart, {THEME_KEY} from 'vue-echarts';
 import {getNetwork, NetworkRequest, NetworkResponse} from "../apis.ts";
-import {Lecture} from "../types.ts";
+import {Lecture, NodeLink} from "../types.ts";
 import {useRouter} from "vue-router";
 import Loading from "../components/Loading.vue";
 import { useJump } from '../utils/useJump.ts';
@@ -74,12 +75,13 @@ const handleClick = async (params: any) => {
       await jump.jumpToNote(params.data.route.id);
     }
   }
-
 }
 
 onMounted(async () => {
+  const userLinks = await getUserLinkCache();
   if (!await getShouldUpdateChart()) {
     chartOptions.value = await loadChartCache();
+    (chartOptions.value.series?.[0]?.links as NodeLink[]).push(...userLinks)
     chart.value.setOption(chartOptions.value);
     return;
   }
@@ -116,6 +118,8 @@ onMounted(async () => {
         return {
           source: link.source,
           target: link.target,
+          weight: link.weight, // extra
+          isUserGenerated: false,  // extra
           lineStyle: {
             width: link.weight * 2,
           }
@@ -132,9 +136,13 @@ onMounted(async () => {
       }
     }]
   } as EChartsOption;
+
+  // 先更新缓存，再加入用户定义的链接
+  await updateChartCache(chartOptions.value);
+  (chartOptions.value.series?.[0]?.links as NodeLink[]).push(...userLinks);
+
   chart.value.setOption(chartOptions.value);
   loading.value = false;
-  await updateChartCache(chartOptions.value);
   await setShouldUpdateChart(false);
 });
 
