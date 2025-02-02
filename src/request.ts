@@ -5,7 +5,7 @@ import { getFakeService } from "./utils/cache"
 const BASE_URL = 'http://localhost:5100'
 
 class HttpError extends Error {
-    constructor(public message: string, public cause: Response) {
+    constructor(public message: string, public cause: string) {
         super(message)
         this.cause = cause
     }
@@ -29,7 +29,7 @@ const request = async (url: string, method: string = 'GET', json?: object, body?
 
         const response = await fetch(fullUrl, init)
         if (!response.ok) {
-            throw new HttpError(`HTTP Error: status: ${response.status}, statusText: ${response.statusText}`, await response.json())
+            throw new HttpError(`HTTP Error: status: ${response.status}, statusText: ${response.statusText}`, await response.text())
         } else {
             info(JSON.stringify(response))
             return await response.json()

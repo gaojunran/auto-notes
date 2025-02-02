@@ -173,3 +173,9 @@ class NetworkResponse(BaseModel):
                 NodeCategory(idx=1, name="另一个topic"),
             ],
         )
+
+class ExportRequest(BaseModel):
+    id: int
+    topic: str
+    abstract: str
+    points: list[Point]

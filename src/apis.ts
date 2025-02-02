@@ -1,7 +1,7 @@
 import request from "./request.ts";
 import {NodeCategory, NodeLink, Node, Point, RawRecognition, Lecture} from "./types.ts";
 
-export interface TestResponse {
+export interface StateResponse {
     response: string;
     [property: string]: any;
 }
@@ -72,10 +72,20 @@ export interface NetworkResponse {
     [property: string]: any;
 }
 
+export interface ExportRequest {
+    id: number;
+    topic: string;
+    abstract: string;
+
+    points: Point[];
+
+    [property: string]: any;
+}
+
 
 
 export const testConnection = async () => {
-    const response = (await request("/test", "GET")) as TestResponse;
+    const response = (await request("/test", "GET")) as StateResponse;
     return response.response === "OK";
 }
 
@@ -94,4 +104,8 @@ export const getNetwork = async (req: NetworkRequest) => {
     return response as NetworkResponse;
 }
 
+export const getExport = async (req: ExportRequest) => {
+    const response = (await request("/export", "POST", req)) as StateResponse;
+    return response.response === "OK";
+}
 

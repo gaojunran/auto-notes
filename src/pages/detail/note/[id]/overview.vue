@@ -2,13 +2,16 @@
 
 import {computed, onMounted, ref} from "vue";
 import Loading from "../../../../components/Loading.vue";
-import {getNote} from "../../../../apis.ts";
+import {getExport, getNote} from "../../../../apis.ts";
 import {Point} from "../../../../types.ts";
 import {useRoute} from "vue-router";
 import {OrganizationChart} from "primevue";
 import {Cache} from "../../../../types.ts";
 import {readCache, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
+import { load } from "@tauri-apps/plugin-store";
+import { info } from "../../../../utils/utils.ts";
+
 
 const loading = ref(false);
 const points = ref([] as Point[])
@@ -53,6 +56,21 @@ const jumpTo = (point?: string, subtitle?: string) => {
   }
 }
 
+const exportNote = async () => {
+  loading.value = true;
+  if (await getExport(
+    {
+      id: id,
+      topic: cache.value.topic,
+      abstract: cache.value.abstract,
+      points: points.value,
+    }
+  )) {
+    loading.value = false;
+    await info("导出成功！");
+  }
+}
+
 onMounted(async () => {
   cache.value = await readCache(id)
   if (cache.value?.points?.length) { // use cache if exists
@@ -74,7 +92,13 @@ onMounted(async () => {
 <template>
   <div>
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
-    <div class="font-bold text-lg">本课思维导图</div>
+    <div class="flex justify-between items-center mb-8">
+      <div class="font-bold text-lg">本课思维导图</div>
+      <Button icon="pi pi-file-pdf" label="导出笔记" size="small"
+        @click="exportNote()"
+      ></Button>
+    </div>
+    
     <OrganizationChart :value="org">
       <template #default="slotProps">
         <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.point, slotProps.node.subtitle)"/>

@@ -20,13 +20,17 @@ init:
     pnpm install
 
 dev:
-    killport 1420 5100
-    rm -rf ./api/.venv
+    -killport 1420 5100
+    -rm -rf ./api/.venv
     pnpm run tauri dev
 
 build:
-    rm -rf ./api/.venv
+    -killport 1420 5100
+    -rm -rf ./api/.venv
     pnpm run tauri build
 
 api:
     cd api; uv run fastapi dev --port 5100
+
+api-format:
+    cd api; ruff format .

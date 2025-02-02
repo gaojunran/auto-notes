@@ -1,0 +1,4 @@
+index="https://github.com/typst/packages"
+repo=`git rev-parse --show-toplevel`
+name=`basename $repo`
+version=`tq --file $repo/typst.toml package.version`

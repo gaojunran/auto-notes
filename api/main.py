@@ -1,6 +1,9 @@
+from pathlib import Path
 import time
 
+from api.functions.export import generate_note
 from api.models import (
+    ExportRequest,
     NetworkRequest,
     NetworkResponse,
     NoteRequest,
@@ -8,6 +11,8 @@ from api.models import (
     RecordResponse,
 )
 from fastapi import FastAPI, UploadFile
+
+CWD = Path.cwd()
 
 app = FastAPI()
 
@@ -40,3 +45,12 @@ async def get_network(network: NetworkRequest, fake: bool = False):
         time.sleep(2)  # 模拟延时
         return NetworkResponse.fake()
     raise NotImplementedError()  # TODO
+
+
+@app.post("/export")
+async def export(content: ExportRequest, fake: bool = False):
+    json_string = content.model_dump_json()
+    with open(CWD / "typst" / "content.json", "w", encoding="utf-8") as f:
+        f.write(json_string)
+    generate_note(content.topic)
+    return {"response": "OK"}

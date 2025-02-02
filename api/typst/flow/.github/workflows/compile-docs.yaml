@@ -1,0 +1,80 @@
+name: Compile docs to PDF
+on:
+  push:
+    paths:
+      - ".github/workflows/compile-docs.yaml"
+      - "docs/**/*"
+  pull_request:
+    paths:
+      - ".github/workflows/compile-docs.yaml"
+      - "docs/**/*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache typst
+        id: cache-typst
+        uses: actions/cache@v4
+        with:
+          path: typst
+          key: linux-typst-0.12.0
+      - name: Download typst if uncached
+        if: steps.cache-typst.outputs.cache-hit != 'true'
+        # will I remember to update this version? no
+        run: |
+          curl -LO https://github.com/typst/typst/releases/download/v0.12.0/typst-x86_64-unknown-linux-musl.tar.xz
+          du -h typst-x86_64-unknown-linux-musl.tar.xz
+          tar -xf typst-x86_64-unknown-linux-musl.tar.xz
+          mv typst-x86_64-unknown-linux-musl/typst ./typst
+
+      - name: Cache IBM Plex
+        id: cache-ibm-plex
+        uses: actions/cache@v4
+        with:
+          path: ibm-plex
+          key: ibm-plex-6.3.0
+      - name: Download IBM Plex if uncached
+        if: steps.cache-ibm-plex.outputs.cache-hit != 'true'
+        run: |
+          curl -LO https://github.com/IBM/plex/releases/download/v6.3.0/TrueType.zip
+          du -h TrueType.zip
+          unzip TrueType.zip
+          mv TrueType ibm-plex
+
+      - name: Cache JetBrainsMono
+        id: cache-jetbrainsmono
+        uses: actions/cache@v4
+        with:
+          path: jetbrains-mono
+          key: cache-jetbrainsmono-3.3.0
+      - name: Download JetBrainsMono if uncached
+        if: steps.cache-jetbrainsmono.outputs.cache-hit != 'true'
+        run: |
+          curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip
+          du -h JetBrainsMono.zip
+          unzip JetBrainsMono.zip -d jetbrains-mono
+
+      - name: Compile all typst documents
+        run: |
+          mkdir -p target/doc
+          for doc in doc/*; do
+            ./typst compile $doc "target/doc/$(basename $doc .typ).pdf" \
+              --root . \
+              --input theme=duality \
+              --font-path jetbrains-mono \
+              --font-path ibm-plex/IBM-Plex-Mono \
+              --font-path ibm-plex/IBM-Plex-Sans
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doc
+          path: target/doc

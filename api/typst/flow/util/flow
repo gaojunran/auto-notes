@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+
+# Wrapper for `typst`.
+#
+# Use like you would use the `typst` command.
+# Has an extra subcommand — info, just pass it a filename
+# and it'll print JSON metadata supplied in flow's template.
+
+set -euo pipefail
+source `dirname $0`/common
+
+mode="$1"
+source="$2"
+shift 2
+
+args=(
+	--root "$notes"
+	--input theme=duality
+)
+
+if [[ "$mode" = info ]]; then
+	mode=query
+	args+=(
+		'<info>'
+		--one
+		--field value
+	)
+fi
+
+if [[ "$mode" = query ]]; then
+	args+=(
+		--input render=false
+	)
+fi
+
+typst "$mode" "$source" \
+	--input "filename=`basename "$source"`" \
+	$args \
+	"$@"

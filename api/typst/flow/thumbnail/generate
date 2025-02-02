@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -eux
+typst compile \
+	../doc/workflow.typ \
+	page-{p}.png \
+	--root .. \
+	--ppi 250
+oxipng \
+	--opt max \
+	--strip safe \
+	--preserve \
+	page-1.png
