@@ -1,7 +1,7 @@
 [project]
 name = "api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Local server support for AutoNotes"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

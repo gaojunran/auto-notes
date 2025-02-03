@@ -23,5 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
-api/.venv/
-.VSCodeCounter/
+
+# My files
+
+/api/.venv/
+/api/__pycache__
+/api/typst/*
+!/api/typst/flow/*
+!/api/typst/main.typ
