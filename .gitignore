@@ -29,5 +29,5 @@ dist-ssr
 /api/.venv/
 /api/__pycache__
 /api/typst/*
-!/api/typst/flow/*
+!/api/typst/flow/
 !/api/typst/main.typ
