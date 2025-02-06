@@ -19,8 +19,8 @@ const props = defineProps({
   <div class="flex items-center justify-center h-full">
     <div class="flex flex-col items-center">
       <ProgressSpinner class="!h-12 !w-12 !m-4" />
-      <div class="text-center mb-2 text-white">{{ props.title }}</div>
-      <div class="text-center text-sm text-white/40">{{ props.subtitle }}</div>
+      <div class="text-center mb-2 dark:text-white text-black font-bold">{{ props.title }}</div>
+      <div class="text-center text-sm dark:text-white/40 text-black/50">{{ props.subtitle }}</div>
     </div>
   </div>
 

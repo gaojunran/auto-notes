@@ -49,7 +49,7 @@ app.use(router)
         theme: {
             preset: MyPreset,
             options: {
-                darkModeSelector: '.my-app-dark',
+                darkModeSelector: '.app-dark',
             }
         }
     })

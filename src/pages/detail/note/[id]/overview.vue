@@ -93,7 +93,7 @@ onMounted(async () => {
   <div>
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     <div class="flex justify-between items-center mb-8">
-      <div class="font-bold text-lg">本课思维导图</div>
+      <div class="font-bold text-lg dark:text-indigo-200 text-indigo-800">本课思维导图</div>
       <Button icon="pi pi-file-pdf" label="导出笔记" size="small"
         @click="exportNote()"
       ></Button>

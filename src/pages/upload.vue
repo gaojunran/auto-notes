@@ -42,7 +42,7 @@ const handleUpload = async (event: FileUploadUploaderEvent) => {
                 class: 'hidden'
               },
               file: {
-                class: 'bg-white/5 rounded'
+                class: 'dark:bg-white/5 bg-black/5 rounded'
               },
               pcUploadButton: {
                 root: '!flex-1'

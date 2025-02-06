@@ -74,9 +74,10 @@ export const updateCache = async (id: number, kv: object) => {
 }
 
 export const updatePointCache = async (id: number, pointName: string, kv: object) => {
+    console.log('updatePointCache', id, pointName, kv);
     const cache = await readCache(id);
     let point = cache?.points?.find(p => p.name === pointName);
-    const pointIndex = cache?.points?.findIndex(p => p.name === pointName) || -1;
+    const pointIndex = cache?.points?.findIndex(p => p.name === pointName) ?? -1;
     if (!point || pointIndex === -1) {
         throw new Error('Point not found');
     }

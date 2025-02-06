@@ -58,7 +58,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <Timeline :value="timeline" :pt="{eventOpposite: { class: '!flex-0 !min-w-1/4'} }">
+    <Timeline :value="timeline" :pt="{eventOpposite: { class: '!flex-0 !min-w-2/5'} }">
       <template #content="slotProps" >
         <div>
           {{ slotProps.item.text }}
@@ -66,7 +66,7 @@ onMounted(async () => {
 
       </template>
       <template #opposite="slotProps">
-        <div class="text-white/50 text-[14px]" :id="`time-${slotProps.item.start}`">
+        <div class="dark:text-white/50 text-black/50 text-[14px]" :id="`time-${slotProps.item.start}`">
           {{ slotProps.item.period }}
         </div>
         <Button severity="secondary" size="small" class="mt-2"

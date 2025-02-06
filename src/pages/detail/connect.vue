@@ -162,7 +162,7 @@ const columns = [
   { field: 'source', header: '源节点' },
   { field: 'target', header: '目标节点' },
   { field: 'weight', header: '权重' },
-  { field: 'isUserGenerated', header: '※' }
+  // { field: 'isUserGenerated', header: '※' }
 ]
 </script>
 
@@ -190,18 +190,18 @@ const columns = [
       </Dialog>
       <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
       <div class="flex justify-between items-center mb-6 gap-4">
-        <div class="font-bold text-lg">所有知识点链接</div>
+        <div class="font-bold text-lg dark:text-indigo-200 text-indigo-800">所有知识点链接</div>
         <Button label="添加链接" @click="isNewLinkShow = true" icon="pi pi-plus" size="small"></Button>
       </div>
         
         <DataTable :value="allLinks" removableSort :pt="{
           tableContainer: '!rounded-lg !border !border-white/10 hover:!border-white/40  !border-2 !transition', 
-          bodyRow: '!bg-black/10 hover:!bg-black/30'
+          bodyRow: 'dark:!bg-black/10 dark:hover:!bg-black/30 !bg-white hover:!bg-black/5'
         }">
             <Column v-for="col in columns" :field="col.field" :header="col.header" sortable
-              :pt="{ headerCell: '!bg-black/10 hover:!bg-black/50' }"
+              :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }"
             />
-            <Column header="" :pt="{ headerCell: '!bg-black/10 hover:!bg-black/50' }" >
+            <Column header="" :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }" >
               <template #body="slotProps">
                 <Button icon="pi pi-trash" outlined severity="danger"
                   @click="removeLink(slotProps.data.source, slotProps.data.target, slotProps.data.isUserGenerated)"

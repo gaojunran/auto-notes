@@ -1,7 +1,7 @@
 <template>
-  <div class="flex min-h-screen bg-black/30">
+  <div class="flex min-h-screen dark:bg-black/30 bg-gray-50">
     <!-- Sidebar -->
-    <aside class="w-40 bg-gray-800 text-white m-4 rounded-2xl flex flex-col overflow-hidden">
+    <aside class="w-40 dark:bg-gray-800 bg-gray-100 text-black dark:text-white m-4 rounded-2xl flex flex-col overflow-hidden">
       <div class="p-6">
         <h1 class="text-2xl font-bold">学习中心</h1>
       </div>
@@ -10,22 +10,23 @@
             v-for="item in menuItems"
             :key="item.name"
             @click="router.push(item.href)"
-            class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-            :class="{ 'bg-gray-700 text-white': item.current }"
+            class="flex items-center px-6 py-3 dark:text-gray-300 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors duration-200 dark:hover:text-white"
+            :class="{ 'dark:bg-gray-700 bg-gray-200 dark:text-white text-black': item.current }"
         >
           <component :is="item.icon" class="h-5 w-5 mr-3"/>
           {{ item.name }}
         </div>
       </nav>
       <div class="p-4">
-        <Button severity="secondary" icon="pi pi-home" label="返回主页" class="w-full" :pt="{ root: '!bg-black/20 hover:!bg-black/50 !transition' }"
+        <Button severity="secondary" icon="pi pi-home" label="返回主页" class="w-full" 
+        :pt="{ root: 'dark:!bg-black/20 dark:hover:!bg-black/50 !bg-white hover:!bg-gray-100 !transition' }"
           @click="router.push('/')"
         ></Button>
       </div>
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 px-6 pt-6 pb-2 overflow-auto bg-white/2 m-4 rounded-2xl">
+    <main class="flex-1 px-6 pt-6 pb-2 overflow-auto dark:bg-white/2 bg-gray-100/30 m-4 rounded-2xl">
       <RouterView v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component"/>
@@ -50,7 +51,6 @@ const menuItems = ref([
   {name: '课堂回放', icon: PlayCircle, href: `/detail/recognition/${id}`},
   {name: '课堂笔记', icon: BookOpen, href: `/detail/note/${id}/overview`},
   {name: '建立关系', icon: LinkIcon, href: `/detail/connect`},
-  // {name: '练习题', icon: PenTool, href: `/detail/exercise/${id}`},
 ]);
 
 menuItems.value.forEach(item => {

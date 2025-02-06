@@ -19,8 +19,10 @@ const options = computed(() => props.subtitles?.map((subtitle) => subtitle.subti
 const currentSelect = ref((options.value[0]) ?? '');
 const currentMarkdown = ref(props.subtitles?.find((subtitle) => subtitle.subtitle === currentSelect.value)?.md ?? '');
 
-watch(options, async (newVal, _) => {
-  currentSelect.value = newVal[0];
+watch(options, (newVal) => {
+  if (!newVal.includes(currentSelect.value)) {
+    currentSelect.value = newVal[0] ?? '';
+  }
 })
 
 watch(currentSelect, async (newVal, oldVal) => {

@@ -98,7 +98,7 @@ onMounted(async () => {
         />
         <Popover ref="popover">
           <a v-for="link in currentPoint.links" :key="link.name" :href="link.href" target="_blank"
-             class="p-1 hover:underline text-white/50 hover:text-white transition block"
+             class="p-1 hover:underline dark:text-white/50 text-black/50 dark:hover:text-white hover:text-black transition block"
           >
             {{link.name}}
           </a>
@@ -123,6 +123,10 @@ onMounted(async () => {
 }
 
 #md strong {
+  color: blueviolet;
+}
+
+.app-dark #md strong {
   color: lightblue;
 }
 

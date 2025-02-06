@@ -34,7 +34,7 @@ use([
   LabelLayout
 ]);
 
-provide(THEME_KEY, 'dark');
+provide(THEME_KEY, document.documentElement.className.includes('app-dark') ? 'dark' : 'light');
 
 type EChartsOption = ComposeOption<
   | TooltipComponentOption
