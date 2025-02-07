@@ -99,9 +99,11 @@ onMounted(async () => {
       ></Button>
     </div>
     
-    <OrganizationChart :value="org">
+    <OrganizationChart :value="org" collapsible :pt="{node: '!p-0'}">
       <template #default="slotProps">
-        <Button :label="slotProps.node.label" severity="secondary" @click="jumpTo(slotProps.node.point, slotProps.node.subtitle)"/>
+        <Button :label="slotProps.node.label"
+                :pt="{root: '!max-w-30 !text-xs'}"
+                severity="secondary" @click="jumpTo(slotProps.node.point, slotProps.node.subtitle)"/>
       </template>
     </OrganizationChart>
   </div>

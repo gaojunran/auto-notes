@@ -66,7 +66,7 @@ onMounted(async () => {
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     <EditNotes v-if="currentPoint.name && currentPoint.subtitles" :point-name="currentPoint.name" :subtitles="currentPoint.subtitles" v-model:show="showEditNotes" ></EditNotes>
     <div class="flex flex-col h-full">
-      <div id="main" class="flex-1">
+      <div id="main" class="flex-1 max-h-[80vh] overflow-y-auto">
         <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name" :id="subtitle.name">
           <div class="flex">
             <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
@@ -78,7 +78,7 @@ onMounted(async () => {
                       class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
               ></Button>
             </div>
-            <div id="md" class="flex-1">
+            <div id="md" class="flex-1 -mt-2">
               <MarkDown :source="subtitle.md" :plugins="[{ plugin: KateX }]"></MarkDown>
             </div>
           </div>
@@ -102,6 +102,9 @@ onMounted(async () => {
           >
             {{link.name}}
           </a>
+          <a v-if="currentPoint.links.length === 0">
+            暂无相关链接
+          </a>
         </Popover>
         <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' : 'secondary'"
                 size="small" @click="currentPoint = point"
@@ -119,11 +122,15 @@ onMounted(async () => {
   margin-top: 4px;
   margin-bottom: 4px;
   font-size: 20px;
+  color: indigo;
+}
+
+.app-dark #md h1 {
   color: lightblue;
 }
 
 #md strong {
-  color: blueviolet;
+  color: indigo;
 }
 
 .app-dark #md strong {

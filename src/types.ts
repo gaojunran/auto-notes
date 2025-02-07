@@ -95,7 +95,7 @@ export interface RawRecognition {
     /**
      * 识别内容
      */
-    text: string;
+    text?: string;
     /**
      * 构建和知识点之间的映射关系
      */

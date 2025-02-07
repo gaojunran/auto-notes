@@ -4,43 +4,151 @@ import {EChartsOption} from "echarts";
 
 const EXAMPLE_CACHE: Cache[] = [
     {
-        id: 12345677,
-        tags: ['离散结构', 'ICSI210'],
+        id: 1,
+        tags: ['Discrete Structures', 'ICSI210'],
         duration: 3421,
-        abstract: '这节课主要讲了关于布尔代数的知识。',
-        topic: '布尔代数',
+        abstract: 'The lecture includes the language of propositions and its applications, and logical equivalents of propositions.',
+        topic: 'Propositional Logic',
         raw_recognition: [
                 {
-                    "start": 0,
-                    "end": 12,
-                    "text": "什么是布尔值？"
+                    "start": 132,
+                    "end": 137,
+                    "text": "Well, for this section, we will talk about logics and proofs, which is the core of the course."
                 },
                 {
-                    "start": 13,
-                    "end": 25,
-                    "text": "布尔值有什么用？"
+                    "start": 137,
+                    "end": 142,
+                    "text": "When it comes to the first concept propositions, it is a declarative sentence that is either true or false. "
                 },
                 {
-                    "start": 26,
-                    "end": 30,
-                    "text": "布尔值有哪两种？"
+                    "start": 143,
+                    "end": 150,
+                    "text": "The truth value of a proposition is determined, it can be predicated from the facts or the rules of inference."
                 },
                 {
-                    "start": 31,
-                    "end": 40,
-                    "text": "什么是命题真值？"
+                    "start": 151,
+                    "end": 158,
+                    "text": "Here are some examples of propositions, we can learn deeper about the definition of propositions."
                 },
                 {
-                    "start": 41,
-                    "end": 50,
-                    "text": "什么是真值表？"
+                    "start": 159,
+                    "end": 166,
+                    "text": "Washington, D.C., is the capital of the United States of America. This sentence follows the fact, and it's true, "
                 },
                 {
-                    "start": 51,
-                    "end": 60,
-                    "text": "真值表有什么用？"
+                    "start": 166,
+                    "end": 172,
+                    "text": "So we can say that it is a proposition."
+                },
+                {
+                    "start": 173,
+                    "end": 179,
+                    "text": "Toronto is the capital of Canada. This sentence also follows the fact, and it's true."
+                },
+                {
+                    "start": 180,
+                    "end": 186,
+                    "text": "1 + 0 = 1. This sentence is a mathematical proposition, and it's true."
+                },
+                {
+                    "start": 187,
+                    "end": 193,
+                    "text": "0 + 0 = 2. This sentence is also a mathematical proposition, and it's false."
                 }
         ],
+        points: [
+            {
+                name: 'The language of propositions',
+                importance: 3,
+                links: [],
+                summary: "",
+                subtitles: [
+                    {
+                        subtitle: 'Propositions',
+                        md: `
+# _Definition_: 
+
+A **proposition** is a declarative sentence that is either true or false. 
+
+# _Examples of propositions_: 
+- Washington, D.C., is the capital of the United States of America.
+- Toronto is the capital of Canada.
+- 1 + 0 = 1
+- 0 + 0 = 2
+# _Examples of non-propositions_: 
+- Sit down!
+- What time is it?
+- $x + 1 = 2$
+- $x + y = z$
+`,
+                        raw_recognition: [{start: 132}]
+                    },
+                    {
+                        subtitle: "Propositional logic",
+                        md: `
+# _Propositional Variables_
+- Represented by \`p, q, r, s, ...\`.
+
+# _Constant Propositions_
+- **T**: A proposition that is always true (tautology).
+- **F**: A proposition that is always false (contradiction).
+
+# _Compound Propositions_
+Built using logical connectives and other propositions. Key connectives include:
+
+1. **Negation**  
+   Symbol: \`¬\`  
+   Example: \`¬p\` (not p).
+
+2. **Conjunction**  
+   Symbol: \`∧\`  
+   Example: \`p ∧ q\` (p and q).
+
+3. **Disjunction**  
+   Symbol: \`∨\`  
+   Example: \`p ∨ q\` (p or q).
+
+4. **Implication**  
+   Symbol: \`→\`  
+   Example: \`p → q\` (if p, then q).
+
+5. **Biconditional**  
+   Symbol: \`↔\`  
+   Example: \`p ↔ q\` (p if and only if q).
+                        `,
+                        raw_recognition: [{start: 303}]
+                    },
+                    {
+                        subtitle: "Truth Tables For Compound Propositions",
+                        md: "...",
+                        raw_recognition: [{start: 400}]
+                    }
+                ]
+            },
+            {
+                name: "Applications of Propositional Logic",
+                importance: 2,
+                links: [],
+                summary: "",
+                subtitles: [
+                    {
+                        subtitle: "Translating English to Propositional Logic",
+                        md: "...",
+                        raw_recognition: [{start: 500}]
+                    },
+                    {
+                        subtitle: "Boolean Searches",
+                        md: "...",
+                        raw_recognition: [{start: 600}]
+                    },
+                    {
+                        subtitle: "Logic Circuits",
+                        md: "...",
+                        raw_recognition: [{start: 700}]
+                    },
+                ]
+            }
+        ]
     }
 ];
 
@@ -77,7 +185,7 @@ export const updatePointCache = async (id: number, pointName: string, kv: object
     console.log('updatePointCache', id, pointName, kv);
     const cache = await readCache(id);
     let point = cache?.points?.find(p => p.name === pointName);
-    const pointIndex = cache?.points?.findIndex(p => p.name === pointName) ?? -1;
+    const pointIndex = cache?.points?.findIndex(p => p.name === pointName);
     if (!point || pointIndex === -1) {
         throw new Error('Point not found');
     }

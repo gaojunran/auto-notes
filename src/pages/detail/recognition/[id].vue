@@ -31,7 +31,7 @@ const getMappings = async () => {
   cache.points.forEach((point) => {
     point?.subtitles?.forEach((subtitle) => {
       subtitle.raw_recognition.forEach((period) => {
-        const idx = recognition.value.findIndex((item) => item.start === period.start && item.end === period.end);
+        const idx = recognition.value.findIndex((item) => item.start === period.start);
         if (idx !== -1) {
           recognition.value[idx].mapping = {
             point: point,
