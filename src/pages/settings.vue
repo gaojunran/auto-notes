@@ -3,7 +3,7 @@ import {success} from "../utils/utils.ts";
 import {onMounted, ref, watch} from "vue";
 import Loading from "../components/Loading.vue";
 import {bootService, installUv} from "../utils/serviceDeps.ts";
-import {clearCache, getFakeService, setFakeService} from "../utils/cache.ts";
+import {clearCache, getFakeService, getIsEnglish, setFakeService, setIsEnglish} from "../utils/cache.ts";
 import {useRouter} from "vue-router";
 import ToggleSwitch from 'primevue/toggleswitch';
 import { info } from "../utils/utils.ts"
@@ -12,11 +12,15 @@ const loading = ref(false)
 const router = useRouter()
 
 const isFakeService = ref(false);
+const isEnglish = ref(false);
 const isDark = ref(document.documentElement.classList.contains("app-dark"));
 
 watch(isFakeService, async (newValue, _) => {
     await setFakeService(newValue);
-    // await info("伪造服务端模式已" + (newValue? "开启" : "关闭") + "！")
+})
+
+watch(isEnglish, async (newValue, _) => {
+    await setIsEnglish(newValue);
 })
 
 watch(isDark, async (newValue, _) => {
@@ -42,6 +46,7 @@ const clearAllCache = async () => {
 
 onMounted(async () => {
   isFakeService.value = await getFakeService();
+  isEnglish.value = await getIsEnglish();
 })
 </script>
 
@@ -72,6 +77,10 @@ onMounted(async () => {
         <div class="flex items-center mb-4">
           <div class=" mr-4">深色模式</div>
           <ToggleSwitch v-model="isDark"></ToggleSwitch>
+        </div>
+        <div class="flex items-center mb-4">
+          <div class=" mr-4">English (Only major user interface)</div>
+          <ToggleSwitch v-model="isEnglish"></ToggleSwitch>
         </div>
         <div class="flex justify-center items-center mt-2">
           <Button severity="secondary" icon="pi pi-home" label="返回主页" size="small" @click="router.push('/')" />

@@ -58,91 +58,85 @@ const EXAMPLE_CACHE: Cache[] = [
         ],
         points: [
             {
-                name: 'The language of propositions',
+                name: 'Propositions',
                 importance: 3,
                 links: [],
                 summary: "",
                 subtitles: [
                     {
-                        subtitle: 'Propositions',
-                        md: `
-# _Definition_: 
-
+                        subtitle: '1. Definition',
+                        md: `         
 A **proposition** is a declarative sentence that is either true or false. 
-
-# _Examples of propositions_: 
-- Washington, D.C., is the capital of the United States of America.
-- Toronto is the capital of Canada.
-- 1 + 0 = 1
-- 0 + 0 = 2
-# _Examples of non-propositions_: 
-- Sit down!
-- What time is it?
-- $x + 1 = 2$
-- $x + y = z$
 `,
                         raw_recognition: [{start: 132}]
                     },
                     {
-                        subtitle: "Propositional logic",
-                        md: `
-# _Propositional Variables_
-- Represented by \`p, q, r, s, ...\`.
+                        subtitle: "2. Examples Analysis",
+                        md: `     
+# _Examples of Propositions_:
+- Washington, D.C., is the capital of the United States of America.
+- Toronto is the capital of Canada.
+- 1 + 0 = 1
+- 0 + 0 = 2
 
-# _Constant Propositions_
-- **T**: A proposition that is always true (tautology).
-- **F**: A proposition that is always false (contradiction).
-
-# _Compound Propositions_
-Built using logical connectives and other propositions. Key connectives include:
-
-1. **Negation**  
-   Symbol: \`¬\`  
-   Example: \`¬p\` (not p).
-
-2. **Conjunction**  
-   Symbol: \`∧\`  
-   Example: \`p ∧ q\` (p and q).
-
-3. **Disjunction**  
-   Symbol: \`∨\`  
-   Example: \`p ∨ q\` (p or q).
-
-4. **Implication**  
-   Symbol: \`→\`  
-   Example: \`p → q\` (if p, then q).
-
-5. **Biconditional**  
-   Symbol: \`↔\`  
-   Example: \`p ↔ q\` (p if and only if q).
+# _Examples of non-propositions_: 
+- Sit down!
+- What time is it?
+- $x + 1 = 2$
+- $x + y = z$"
                         `,
                         raw_recognition: [{start: 303}]
                     },
                     {
-                        subtitle: "Truth Tables For Compound Propositions",
-                        md: "...",
+                        subtitle: "3. Symbol Representations",
+                        md: `
+1. Proposition valuables are represented by \`p, q, r, s, ...\`.
+2. Constants: 
+    **T**: A proposition that is always true (tautology).
+    **F**: A proposition that is always false (contradiction).
+3. Proposition Logics:
+    - **Negation**  
+    Symbol: \`¬\`  
+    Example: \`¬p\` (not p).
+
+    - **Conjunction**  
+    Symbol: \`∧\`  
+    Example: \`p ∧ q\` (p and q).
+
+    - **Disjunction**  
+    Symbol: \`∨\`  
+    Example: \`p ∨ q\` (p or q).
+
+    - **Implication**  
+    Symbol: \`→\`  
+    Example: \`p → q\` (if p, then q).
+
+    - **Biconditional**  
+    Symbol: \`↔\`  
+    Example: \`p ↔ q\` (p if and only if q).
+                        `,
                         raw_recognition: [{start: 400}]
                     }
                 ]
             },
             {
-                name: "Applications of Propositional Logic",
+                name: "Truth Tables for Compound Propositions",
                 importance: 2,
                 links: [],
                 summary: "",
                 subtitles: [
                     {
-                        subtitle: "Translating English to Propositional Logic",
+                        subtitle: "1. Basic Introduction",
                         md: "...",
                         raw_recognition: [{start: 500}]
                     },
                     {
-                        subtitle: "Boolean Searches",
+                        subtitle: "2. Examples & Solutions",
                         md: "...",
                         raw_recognition: [{start: 600}]
                     },
                     {
-                        subtitle: "Logic Circuits",
+                        subtitle: "3. Summary",
                         md: "...",
                         raw_recognition: [{start: 700}]
                     },
@@ -256,4 +250,12 @@ export const getFakeService = async () => {
 
 export const setFakeService = async (fake: boolean) => {
     await store.set('fakeService', fake);
+}
+
+export const getIsEnglish = async () => {
+    return await store.get<boolean>('isEnglish') ?? true;
+}
+
+export const setIsEnglish = async (isEnglish: boolean) => {
+    await store.set('isEnglish', isEnglish);
 }

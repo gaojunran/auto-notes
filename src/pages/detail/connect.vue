@@ -7,6 +7,7 @@ import { EChartsOption } from 'echarts';
 import { DataTable, Column, Dialog, Select, Rating } from 'primevue';
 import Loading from '../../components/Loading.vue';
 import { info } from '../../utils/utils';
+import {useEnglish} from "../../utils/useEnglish.ts";
 
 const getResponse = async () => {
   const caches = await readAllCache()
@@ -23,6 +24,7 @@ const getResponse = async () => {
   return await getNetwork({lectures: requests} as NetworkRequest);
 }
 
+const { i18n } = useEnglish();
 
 const data = ref<NetworkResponse>();
 
@@ -159,48 +161,60 @@ onMounted(async () => {
 });
 
 const columns = [
-  { field: 'source', header: '源节点' },
-  { field: 'target', header: '目标节点' },
-  { field: 'weight', header: '权重' },
+  { field: 'source', header: 'Source' },
+  { field: 'target', header: 'Target' },
+  { field: 'weight', header: 'Weight' },
   // { field: 'isUserGenerated', header: '※' }
 ]
 </script>
 
 <template>
     <div>
-      <Dialog v-model:visible="isNewLinkShow" modal :style="{ width: '75%' }" header="新增链接">
+      <Dialog v-model:visible="isNewLinkShow" modal :style="{ width: '75%' }" header="Add a New Link...">
         <div class="flex justify-between items-center mb-4 gap-4">
           <div class="flex justify-start items-center mb-4 gap-8">
-            <div>源节点</div>
-            <Select v-model="sourceSelect" :options="nodes" placeholder="选择一个节点"></Select>
+            <div>Source Node</div>
+            <Select v-model="sourceSelect" :options="nodes" placeholder="Select one..."></Select>
           </div>
           <div class="flex justify-start items-center mb-4 gap-6 mr-12">
-            <div>目标节点</div>
-            <Select v-model="targetSelect" :options="nodes" placeholder="选择一个节点"></Select>
+            <div>Target Node</div>
+            <Select v-model="targetSelect" :options="nodes" placeholder="Select one..."></Select>
           </div>
         </div>
         <div class="flex justify-start items-center mb-4 gap-4">
-          <div>关系权重</div>
+          <div>Relationship Weight</div>
           <Rating v-model="weightInput"></Rating>
         </div>
         <template #footer>
-          <Button icon="pi pi-save" label="保存链接" @click="saveNewLink(sourceSelect, targetSelect, weightInput)"></Button>
+          <Button icon="pi pi-save" :label="i18n('Save', '保存')" @click="saveNewLink(sourceSelect, targetSelect, weightInput)"></Button>
         </template>
         
       </Dialog>
       <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
       <div class="flex justify-between items-center mb-6 gap-4">
-        <div class="font-bold text-lg dark:text-indigo-200 text-indigo-800">所有知识点链接</div>
-        <Button label="添加链接" @click="isNewLinkShow = true" icon="pi pi-plus" size="small"></Button>
+        <div class="font-bold text-xl dark:text-white text-black">
+          {{ i18n("All Knowledge Links", "所有知识链接") }}
+        </div>
+        <Button :label="i18n('Add New Link', '添加新链接')" @click="isNewLinkShow = true" icon="pi pi-plus" size="small"></Button>
       </div>
         
         <DataTable :value="allLinks" removableSort :pt="{
           tableContainer: '!rounded-lg !border !border-white/10 hover:!border-white/40  !border-2 !transition', 
           bodyRow: 'dark:!bg-black/10 dark:hover:!bg-black/30 !bg-white hover:!bg-black/5'
         }">
-            <Column v-for="col in columns" :field="col.field" :header="col.header" sortable
+          <Column field="source" :header="i18n('Source', '源节点')" sortable
               :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }"
             />
+            <Column field="target" :header="i18n('Target', '目标节点')" sortable
+                    :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }"
+          />
+            <Column field="weight" :header="i18n('Weight', '权重')" sortable
+                  :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }"
+            >
+              <template #body="slotProps">
+                <Rating v-model="slotProps.data.weight" readonly></Rating>
+              </template>
+            </Column>
             <Column header="" :pt="{ headerCell: 'dark:!bg-black/10 dark:hover:!bg-black/50 !bg-black/5 hover:!bg-black/20' }" >
               <template #body="slotProps">
                 <Button icon="pi pi-trash" outlined severity="danger"

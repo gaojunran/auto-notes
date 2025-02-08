@@ -12,6 +12,7 @@ import {readCache, updateCache} from "../../../../utils/cache.ts";
 import {useJump} from "../../../../utils/useJump.ts";
 import KateX from "@vscode/markdown-it-katex"
 import EditNotes from "../../../../components/EditNotes.vue";
+import {useEnglish} from "../../../../utils/useEnglish.ts";
 
 const id = Number((useRoute().params as { id: string }).id);
 const loading = ref(false);
@@ -26,6 +27,8 @@ const jump = useJump();
 
 const popover = ref();
 const showEditNotes = ref(false);
+
+const { i18n } = useEnglish();
 
 const togglePopover = (event: any) => {
   popover.value.toggle(event);
@@ -66,19 +69,28 @@ onMounted(async () => {
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     <EditNotes v-if="currentPoint.name && currentPoint.subtitles" :point-name="currentPoint.name" :subtitles="currentPoint.subtitles" v-model:show="showEditNotes" ></EditNotes>
     <div class="flex flex-col h-full">
-      <div id="main" class="flex-1 max-h-[80vh] overflow-y-auto">
+      <div class="flex gap-4 mb-4 items-center">
+        <div class="font-bold text-xl">
+          {{ currentPoint.name }}
+        </div>
+        <Button v-for="point in points" :key="point.name" :label="point.name" :severity="'secondary'"
+                v-show="point.name !== currentPoint.name" size="small" @click="currentPoint = point"
+        ></Button>
+      </div>
+
+      <div id="main" class="flex-1 max-h-[65vh] overflow-y-auto">
         <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name" :id="subtitle.name">
           <div class="flex">
             <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
-              <div>
-                {{subtitle.subtitle}}
+              <div class="font-bold text-lg">
+                {{ subtitle.subtitle }}
               </div>
               <Button :pt="{label: {class: '!text-xs'}}"
                       size="small" :label="getStartTime(subtitle.raw_recognition)" severity="secondary"
                       class="mt-2" @click="jump.jumpToRecognition(id, subtitle.raw_recognition[0].start)"
               ></Button>
             </div>
-            <div id="md" class="flex-1 -mt-2">
+            <div id="md" class="flex-1 -mt-1">
               <MarkDown :source="subtitle.md" :plugins="[{ plugin: KateX }]"></MarkDown>
             </div>
           </div>
@@ -91,9 +103,9 @@ onMounted(async () => {
         <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
       </div>
       <div id="points" class="w-full rounded mb-2 flex flex-wrap justify-start items-center gap-4 flex-0">
-        <Button @click="navigateToOverview" label="总览" icon="pi pi-book" size="small" severity="secondary"></Button>
-        <Button @click="showEditNotes = true" label="编辑笔记" icon="pi pi-pencil" size="small" severity="secondary"></Button>
-        <Button label="相关链接" severity="secondary" size="small" icon="pi pi-link"
+        <Button @click="navigateToOverview" :label="i18n('Overview', '总览')" icon="pi pi-book" size="small" severity="secondary"></Button>
+        <Button @click="showEditNotes = true" :label="i18n('Edit Notes', '编辑笔记')" icon="pi pi-pencil" size="small" severity="secondary"></Button>
+        <Button :label="i18n('Related Links', '相关链接')" severity="secondary" size="small" icon="pi pi-link"
                 @click="togglePopover"
         />
         <Popover ref="popover">
@@ -106,9 +118,7 @@ onMounted(async () => {
             暂无相关链接
           </a>
         </Popover>
-        <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' : 'secondary'"
-                size="small" @click="currentPoint = point"
-        ></Button>
+
       </div>
     </div>
   </div>
@@ -121,7 +131,7 @@ onMounted(async () => {
   font-weight: bold;
   margin-top: 4px;
   margin-bottom: 4px;
-  font-size: 20px;
+  font-size: 18px;
   color: indigo;
 }
 

@@ -11,7 +11,7 @@
                cursor-pointer"
           >
             <UploadIcon class="w-6 h-6 mr-2" />
-            上传音频
+            {{ i18n("Upload Audio", "上传音频") }}
           </button>
           <button
               @click="navigateTo('/network')"
@@ -21,17 +21,17 @@
               cursor-pointer"
           >
             <NetworkIcon class="w-6 h-6 mr-2" />
-            知识点网络
+            {{ i18n("Knowledge Graph", "知识图谱") }}
           </button>
 
         </div>
         <div class="text-lg text-black dark:text-white mt-10 mb-4 font-bold">
-          历史课程
+          {{ i18n("Previous Lectures", "历史课程") }}
         </div>
         <div class="text-center text-white/50 mt-4 "
           v-if="histories.length === 0"
         >
-          暂无课程，快去录制或上传吧！
+          {{ i18n("No Previous Lectures", "还没有历史课程，快去上传吧") }}
         </div>
         <HistoryCard
             v-for="history in histories"
@@ -59,6 +59,11 @@
     import { Cache } from "../types.js";
     import HistoryCard from "../components/HistoryCard.vue";
     import { readAllCache } from "../utils/cache.ts";
+    import {useEnglish} from "../utils/useEnglish.ts";
+
+    const isEnglish = ref(false);
+
+    const { i18n } = useEnglish();
 
     const router = useRouter()
     const histories = ref([] as Cache[])
