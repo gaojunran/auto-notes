@@ -71,19 +71,29 @@ A **proposition** is a declarative sentence that is either true or false.
                         raw_recognition: [{start: 132}]
                     },
                     {
-                        subtitle: "2. Examples Analysis",
-                        md: `     
-# _Examples of Propositions_:
-- Washington, D.C., is the capital of the United States of America.
-- Toronto is the capital of Canada.
-- 1 + 0 = 1
-- 0 + 0 = 2
+                        subtitle: "2. Example Analysis",
+                        md: `
+# Problem
+How do we distinguish between **propositions and non-propositions** in logic?
+     
+# Solution
+A **proposition** is a declarative statement that is either true or false. Examples:
 
-# _Examples of non-propositions_: 
-- Sit down!
-- What time is it?
-- $x + 1 = 2$
-- $x + y = z$"
+- "Washington, D.C., is the capital of the United States of America." (True)
+
+- "0 + 0 = 2." (False)
+
+A **non-proposition** is a statement that cannot be classified as true or false. These include commands, questions, and expressions with variables. Examples:
+
+- "Sit down!" (Command)
+
+- "What time is it?" (Question)
+
+# Analysis
+
+Non-propositions, on the other hand, lack a truth value and are not suitable for logical analysis. For example, commands and questions are meant to elicit actions or responses, not to assert facts.
+
+
                         `,
                         raw_recognition: [{start: 303}]
                     },
@@ -258,4 +268,12 @@ export const getIsEnglish = async () => {
 
 export const setIsEnglish = async (isEnglish: boolean) => {
     await store.set('isEnglish', isEnglish);
+}
+
+export const getIsBeta = async () => {
+    return await store.get<boolean>('isBeta') ?? false;
+}
+
+export const setIsBeta = async (isBeta: boolean) => {
+    await store.set('isBeta', isBeta);
 }

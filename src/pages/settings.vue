@@ -3,7 +3,15 @@ import {success} from "../utils/utils.ts";
 import {onMounted, ref, watch} from "vue";
 import Loading from "../components/Loading.vue";
 import {bootService, installUv} from "../utils/serviceDeps.ts";
-import {clearCache, getFakeService, getIsEnglish, setFakeService, setIsEnglish} from "../utils/cache.ts";
+import {
+  clearCache,
+  getFakeService,
+  getIsBeta,
+  getIsEnglish,
+  setFakeService,
+  setIsBeta,
+  setIsEnglish
+} from "../utils/cache.ts";
 import {useRouter} from "vue-router";
 import ToggleSwitch from 'primevue/toggleswitch';
 import { info } from "../utils/utils.ts"
@@ -13,6 +21,7 @@ const router = useRouter()
 
 const isFakeService = ref(false);
 const isEnglish = ref(false);
+const isBeta = ref(false);
 const isDark = ref(document.documentElement.classList.contains("app-dark"));
 
 watch(isFakeService, async (newValue, _) => {
@@ -21,6 +30,10 @@ watch(isFakeService, async (newValue, _) => {
 
 watch(isEnglish, async (newValue, _) => {
     await setIsEnglish(newValue);
+})
+
+watch(isBeta, async (newValue, _) => {
+   await setIsBeta(newValue);
 })
 
 watch(isDark, async (newValue, _) => {
@@ -47,6 +60,7 @@ const clearAllCache = async () => {
 onMounted(async () => {
   isFakeService.value = await getFakeService();
   isEnglish.value = await getIsEnglish();
+  isBeta.value = await getIsBeta();
 })
 </script>
 
@@ -71,16 +85,20 @@ onMounted(async () => {
           <Button severity="warn" icon="pi pi-trash" label="清空缓存" size="small" @click="clearAllCache" />
         </div>
         <div class="flex items-center mb-6">
-          <div class=" mr-4">伪造服务端模式</div>
+          <div class=" mr-4">伪造服务端模式（仅前端测试时使用）</div>
           <ToggleSwitch v-model="isFakeService"></ToggleSwitch>
         </div>
-        <div class="flex items-center mb-4">
+        <div class="flex items-center mb-6">
           <div class=" mr-4">深色模式</div>
           <ToggleSwitch v-model="isDark"></ToggleSwitch>
         </div>
-        <div class="flex items-center mb-4">
-          <div class=" mr-4">English (Only major user interface)</div>
+        <div class="flex items-center mb-6">
+          <div class=" mr-4">English (Only major user interfaces)</div>
           <ToggleSwitch v-model="isEnglish"></ToggleSwitch>
+        </div>
+        <div class="flex items-center mb-4">
+          <div class=" mr-4">Beta</div>
+          <ToggleSwitch v-model="isBeta"></ToggleSwitch>
         </div>
         <div class="flex justify-center items-center mt-2">
           <Button severity="secondary" icon="pi pi-home" label="返回主页" size="small" @click="router.push('/')" />

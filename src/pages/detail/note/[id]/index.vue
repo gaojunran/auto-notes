@@ -13,6 +13,7 @@ import {useJump} from "../../../../utils/useJump.ts";
 import KateX from "@vscode/markdown-it-katex"
 import EditNotes from "../../../../components/EditNotes.vue";
 import {useEnglish} from "../../../../utils/useEnglish.ts";
+import {useBeta} from "../../../../utils/useBeta.ts";
 
 const id = Number((useRoute().params as { id: string }).id);
 const loading = ref(false);
@@ -29,6 +30,7 @@ const popover = ref();
 const showEditNotes = ref(false);
 
 const { i18n } = useEnglish();
+const { isBeta } = useBeta();
 
 const togglePopover = (event: any) => {
   popover.value.toggle(event);
@@ -68,17 +70,19 @@ onMounted(async () => {
   <div class="h-full">
     <Loading v-model="loading" title="正为您生成笔记..." subtitle="耗时将取决于您上传的录音时长，请耐心等待。"></Loading>
     <EditNotes v-if="currentPoint.name && currentPoint.subtitles" :point-name="currentPoint.name" :subtitles="currentPoint.subtitles" v-model:show="showEditNotes" ></EditNotes>
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col justify-between h-full">
       <div class="flex gap-4 mb-4 items-center">
-        <div class="font-bold text-xl">
-          {{ currentPoint.name }}
-        </div>
-        <Button v-for="point in points" :key="point.name" :label="point.name" :severity="'secondary'"
-                v-show="point.name !== currentPoint.name" size="small" @click="currentPoint = point"
+<!--        <div class="font-bold text-xl">-->
+<!--          {{ currentPoint.name }}-->
+<!--        </div>-->
+        <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' :'secondary'"
+                size="small" @click="currentPoint = point"
         ></Button>
+        <Button v-show="isBeta" label="Logic & Bit Operations" severity="secondary" size="small"></Button>
+        <Button v-show="isBeta" label="Equivalent Propositions" severity="secondary" size="small"></Button>
       </div>
 
-      <div id="main" class="flex-1 max-h-[65vh] overflow-y-auto">
+      <div id="main" class="flex-1 max-h-[70vh] overflow-y-auto">
         <div v-for="subtitle in currentPoint.subtitles" :key="subtitle.name" :id="subtitle.name">
           <div class="flex">
             <div id="subtitle" class="flex-none w-1/4 text-right pr-6">
@@ -98,7 +102,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div id="importance" class="flex gap-2 mt-6 mb-4 w-max-content rounded-md flex-0">
+      <div id="importance" class="flex gap-2 mt-0 mb-0 w-max-content rounded-md flex-0">
         <i class="pi pi-star-fill text-yellow-500" v-for="i in currentPoint.importance || 0" :key="i" />
         <i class="pi pi-star text-gray-400" v-for="i in 5 - currentPoint.importance || 0" :key="i" />
       </div>
