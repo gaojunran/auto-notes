@@ -119,6 +119,7 @@ onMounted(async () => {
           source: link.source,
           target: link.target,
           weight: link.weight, // extra
+          value: 5 - link.weight, // ?
           isUserGenerated: false,  // extra
           lineStyle: {
             width: link.weight * 2,
@@ -132,7 +133,8 @@ onMounted(async () => {
       }),
       force: {
         initLayout: 'circular',
-        repulsion: 500
+        repulsion: 500,
+        edgeLength: 100,
       }
     }]
   } as EChartsOption;

@@ -1,4 +1,3 @@
-# 定义请求和响应模型
 from api.entities import (
     Lecture,
     Link,
@@ -135,42 +134,107 @@ class NetworkResponse(BaseModel):
         return cls(
             nodes=[
                 Node(
-                    name="布尔代数", category=0, size=5, route=NoteRoute(id=12345678)
+                    name="Propositional Logic", category=0, size=5, route=NoteRoute(id=1),
                 ),  # topic
                 Node(
-                    name="布尔值",
-                    category=0,
-                    size=2,
-                    route=NoteRoute(id=12345678, point="布尔值"),
-                ),  # point
+                    name="Predicate Logic", category=1, size=5, route=NoteRoute(id=2),
+                ),  # topic
                 Node(
-                    name="真值表",
-                    category=0,
-                    size=3,
-                    route=NoteRoute(id=12345678, point="真值表"),
-                ),  # point
+                    name="Set", category=2, size=5, route=NoteRoute(id=3),
+                ),  # topic
                 Node(
-                    name="另一个topic",
-                    category=1,
-                    size=4,
-                    route=NoteRoute(id=12345679),
-                ),  # point
+                    name="Functions", category=3, size=5, route=NoteRoute(id=4),
+                ),  # topic
                 Node(
-                    name="另一个point",
-                    category=1,
-                    size=1,
-                    route=NoteRoute(id=12345679, point="另一个point"),
-                ),  # point
+                    name="Sequences and Summations", category=4, size=5, route=NoteRoute(id=5),
+                ),  # topic
+                Node(
+                    name="Matrices", category=5, size=5, route=NoteRoute(id=6),
+                ),  # topic
+                Node(
+                    name="The Language of Propositions", category=0, size=4, route=NoteRoute(id=7),
+                ),
+                Node(
+                    name="Applications of Proposition Logic", category=0, size=3, route=NoteRoute(id=8),
+                ),
+                Node(
+                    name="Logical Equivalences", category=0, size=3, route=NoteRoute(id=9),
+                ),
+                Node(
+                    name="The Language of Quantifiers", category=1, size=4, route=NoteRoute(id=10),
+                ),
+                Node(
+                    name="Describing Sets", category=2, size=3, route=NoteRoute(id=11),
+                ),
+                Node(
+                    name="Subsets and Set Equality", category=2, size=4, route=NoteRoute(id=12),
+                ),
+                Node(
+                    name="Cardinality of Sets", category=2, size=4, route=NoteRoute(id=13),
+                ),
+                Node(
+                    name="Set Operations", category=2, size=4, route=NoteRoute(id=14),
+                ),
+                Node(
+                    name="Membership Tables", category=2, size=5, route=NoteRoute(id=15),
+                ),
+                Node(
+                    name="Injection, Surjection, Bijection", category=3, size=4, route=NoteRoute(id=16),
+                ),
+                Node(
+                    name="Inverse Function", category=3, size=2, route=NoteRoute(id=17),
+                ),
+                Node(
+                    name="Function Composition", category=3, size=4, route=NoteRoute(id=18),
+                ),
+                Node(
+                    name="Recurrence Relations", category=4, size=3, route=NoteRoute(id=19),
+                ),
+                Node(
+                    name="Summations", category=4, size=3, route=NoteRoute(id=20),
+                ),
+                Node(
+                    name="Matrix Arithmetic", category=5, size=2, route=NoteRoute(id=21),
+                )
             ],
             links=[
-                NodeLink(source="布尔代数", target="真值表", weight=1),
-                NodeLink(source="布尔代数", target="布尔值", weight=2),
-                NodeLink(source="真值表", target="另一个point", weight=1),
-                NodeLink(source="另一个topic", target="另一个point", weight=4),
+                # Centralized
+                NodeLink(source="Propositional Logic", target="The Language of Propositions", weight=1),
+                NodeLink(source="Propositional Logic", target="Applications of Proposition Logic", weight=1),
+                NodeLink(source="Propositional Logic", target="Logical Equivalences", weight=1),
+                NodeLink(source="Predicate Logic", target="The Language of Quantifiers", weight=1),
+                NodeLink(source="Set", target="Describing Sets", weight=1),
+                NodeLink(source="Set", target="Subsets and Set Equality", weight=1),
+                NodeLink(source="Set", target="Cardinality of Sets", weight=1),
+                NodeLink(source="Set", target="Set Operations", weight=1),
+                NodeLink(source="Set", target="Membership Tables", weight=1),
+                NodeLink(source="Functions", target="Injection, Surjection, Bijection", weight=1),
+                NodeLink(source="Functions", target="Inverse Function", weight=1),
+                NodeLink(source="Functions", target="Function Composition", weight=1),
+                NodeLink(source="Sequences and Summations", target="Recurrence Relations", weight=1),
+                NodeLink(source="Sequences and Summations", target="Summations", weight=1),
+                NodeLink(source="Matrices", target="Matrix Arithmetic", weight=1),
+
+                # Distributed
+                NodeLink(source="The Language of Propositions", target="The Language of Quantifiers", weight=2),
+                NodeLink(source="Applications of Proposition Logic", target="Membership Tables", weight=2),
+                NodeLink(source="Set Operations", target="Membership Tables", weight=2),
+                NodeLink(source="Function Composition", target="Inverse Function", weight=2),
+                NodeLink(source="The Language of Propositions", target="Describing Sets", weight=2),
+                NodeLink(source="Subsets and Set Equality", target="Set Operations", weight=2),
+                NodeLink(source="Cardinality of Sets", target="Set Operations", weight=2),
+                NodeLink(source="The Language of Propositions", target="Recurrence Relations", weight=2),
+                NodeLink(source="The Language of Quantifiers", target="Recurrence Relations", weight=2),
+                NodeLink(source="Injection, Surjection, Bijection", target="Applications of Proposition Logic", weight=2),
+                NodeLink(source="Matrix Arithmetic", target="Set Operations", weight=2),
             ],
             categories=[
-                NodeCategory(idx=0, name="布尔代数"),
-                NodeCategory(idx=1, name="另一个topic"),
+                NodeCategory(idx=0, name="Propositional Logic"),
+                NodeCategory(idx=1, name="Predicate Logic"),
+                NodeCategory(idx=2, name="Set"),
+                NodeCategory(idx=3, name="Functions"),
+                NodeCategory(idx=4, name="Sequences and Summations"),
+                NodeCategory(idx=5, name="Matrices"),
             ],
         )
 

@@ -95,7 +95,7 @@ Non-propositions, on the other hand, lack a truth value and are not suitable for
 
 
                         `,
-                        raw_recognition: [{start: 303}]
+                        raw_recognition: [{start: 151}]
                     },
                     {
                         subtitle: "3. Symbol Representations",

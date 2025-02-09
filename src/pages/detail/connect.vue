@@ -182,7 +182,7 @@ const columns = [
           </div>
         </div>
         <div class="flex justify-start items-center mb-4 gap-4">
-          <div>Relationship Weight</div>
+          <div>Connection Tightness Weight</div>
           <Rating v-model="weightInput"></Rating>
         </div>
         <template #footer>
