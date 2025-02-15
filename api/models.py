@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+This file defines responses and requests
+Created on Thu Feb  6 13:27:44 2025
+@author: Zeyu Pan
+version 2
+"""
+
+"""
 from api.entities import (
     Lecture,
     Link,
@@ -9,24 +18,31 @@ from api.entities import (
     RawRecognition,
     Subtitle,
 )
+"""
+#BaseModel：用于定义数据模型，强类型校验输入输出数据。
 from pydantic import BaseModel
 
+#在api目录下，下行代码可注释掉，选用上面的代码
+from entities import RawRecognition, Point, Link, Subtitle,NoteRoute,NodeLink,Lecture,Node,NodeCategory
+# 定义请求和响应模型
 
+# 定义record接口响应模型（RecordResponse）
 class RecordResponse(BaseModel):
-    id: int
-    duration: int
-    topic: str
-    abstract: str
-    raw_recognition: list[RawRecognition]
-
+    id: int #id：录音唯一标识。
+    duration: int #duration：录音时长（秒）。
+    topic: str #topic：录音主题。
+    abstract: str #abstract：录音摘要。
+    raw_recognition: list[RawRecognition] #raw_recognition：识别的原始内容（一个 RawRecognition 列表）。
+    
+    # 类方法：生成一个假的 RecordResponse 对象，用于测试或模拟数据
     @classmethod
     def fake(cls):
         return cls(
-            id=12345678,
-            duration=45 * 60,
-            topic="布尔代数",
-            abstract="布尔代数是数学的一个分支，它研究的是命题的真值表。",
-            raw_recognition=[
+            id=12345678, # 模拟的录音 ID
+            duration=45 * 60, # 模拟的录音时长（45 分钟）
+            topic="布尔代数", # 模拟的主题
+            abstract="布尔代数是数学的一个分支，它研究的是命题的真值表。", # 模拟的摘要
+            raw_recognition=[ # 模拟的原始识别内容
                 RawRecognition(start=0, end=12, text="什么是布尔值？"),
                 RawRecognition(start=13, end=25, text="布尔值有什么用？"),
                 RawRecognition(start=26, end=30, text="布尔值有哪两种？"),
@@ -36,16 +52,17 @@ class RecordResponse(BaseModel):
             ],
         )
 
-
+# 定义笔记请求模型（NoteRequest），用于接收生成笔记的请求
 class NoteRequest(BaseModel):
-    topic: str
-    abstract: str
-    raw_recognition: list[RawRecognition]
+    topic: str #topic：笔记主题。
+    abstract: str #abstract：笔记摘要。
+    raw_recognition: list[RawRecognition] #raw_recognition：识别的原始内容（一个 RawRecognition 列表）。
 
-
+# 定义笔记响应模型（NoteResponse），用于返回生成的笔记要点
 class NoteResponse(BaseModel):
-    points: list[Point]
+    points: list[Point] #points：笔记要点列表（一个 Point 列表）。
 
+    # 类方法：生成一个假的 NoteResponse 对象，用于测试或模拟数据
     @classmethod
     def fake(cls):
         return cls(
@@ -119,125 +136,62 @@ class NoteResponse(BaseModel):
             ]
         )
 
-
+# 定义网络请求模型（NetworkRequest），用于接收多个讲座信息
 class NetworkRequest(BaseModel):
-    lectures: list[Lecture]
+    lectures: list[Lecture] # lectures：讲座列表（包含多个 Lecture 对象）
 
-
+# 定义网络响应模型（NetworkResponse），用于返回网络图数据，包括节点、连接和分类
 class NetworkResponse(BaseModel):
-    nodes: list[Node]
-    links: list[NodeLink]
-    categories: list[NodeCategory]
+    nodes: list[Node] # nodes：节点列表（包含多个 Node 对象）
+    links: list[NodeLink] # links：节点连接列表（包含多个 NodeLink 对象）
+    categories: list[NodeCategory] # categories：节点分类列表（包含多个 NodeCategory 对象）
 
+     # 类方法：生成一个假的 NetworkResponse 对象，用于测试或模拟数据
     @classmethod
     def fake(cls):
         return cls(
             nodes=[
                 Node(
-                    name="Propositional Logic", category=0, size=5, route=NoteRoute(id=1),
+                    name="布尔代数", category=0, size=5, route=NoteRoute(id=12345678)
                 ),  # topic
                 Node(
-                    name="Predicate Logic", category=1, size=5, route=NoteRoute(id=2),
-                ),  # topic
+                    name="布尔值",
+                    category=0,
+                    size=2,
+                    route=NoteRoute(id=12345678, point="布尔值"),
+                ),  # point
                 Node(
-                    name="Set", category=2, size=5, route=NoteRoute(id=3),
-                ),  # topic
+                    name="真值表",
+                    category=0,
+                    size=3,
+                    route=NoteRoute(id=12345678, point="真值表"),
+                ),  # point
                 Node(
-                    name="Functions", category=3, size=5, route=NoteRoute(id=4),
-                ),  # topic
+                    name="另一个topic",
+                    category=1,
+                    size=4,
+                    route=NoteRoute(id=12345679),
+                ),  # point
                 Node(
-                    name="Sequences and Summations", category=4, size=5, route=NoteRoute(id=5),
-                ),  # topic
-                Node(
-                    name="Matrices", category=5, size=5, route=NoteRoute(id=6),
-                ),  # topic
-                Node(
-                    name="The Language of Propositions", category=0, size=4, route=NoteRoute(id=7),
-                ),
-                Node(
-                    name="Applications of Proposition Logic", category=0, size=3, route=NoteRoute(id=8),
-                ),
-                Node(
-                    name="Logical Equivalences", category=0, size=3, route=NoteRoute(id=9),
-                ),
-                Node(
-                    name="The Language of Quantifiers", category=1, size=4, route=NoteRoute(id=10),
-                ),
-                Node(
-                    name="Describing Sets", category=2, size=3, route=NoteRoute(id=11),
-                ),
-                Node(
-                    name="Subsets and Set Equality", category=2, size=4, route=NoteRoute(id=12),
-                ),
-                Node(
-                    name="Cardinality of Sets", category=2, size=4, route=NoteRoute(id=13),
-                ),
-                Node(
-                    name="Set Operations", category=2, size=4, route=NoteRoute(id=14),
-                ),
-                Node(
-                    name="Membership Tables", category=2, size=5, route=NoteRoute(id=15),
-                ),
-                Node(
-                    name="Injection, Surjection, Bijection", category=3, size=4, route=NoteRoute(id=16),
-                ),
-                Node(
-                    name="Inverse Function", category=3, size=2, route=NoteRoute(id=17),
-                ),
-                Node(
-                    name="Function Composition", category=3, size=4, route=NoteRoute(id=18),
-                ),
-                Node(
-                    name="Recurrence Relations", category=4, size=3, route=NoteRoute(id=19),
-                ),
-                Node(
-                    name="Summations", category=4, size=3, route=NoteRoute(id=20),
-                ),
-                Node(
-                    name="Matrix Arithmetic", category=5, size=2, route=NoteRoute(id=21),
-                )
+                    name="另一个point",
+                    category=1,
+                    size=1,
+                    route=NoteRoute(id=12345679, point="另一个point"),
+                ),  # point
             ],
             links=[
-                # Centralized
-                NodeLink(source="Propositional Logic", target="The Language of Propositions", weight=1),
-                NodeLink(source="Propositional Logic", target="Applications of Proposition Logic", weight=1),
-                NodeLink(source="Propositional Logic", target="Logical Equivalences", weight=1),
-                NodeLink(source="Predicate Logic", target="The Language of Quantifiers", weight=1),
-                NodeLink(source="Set", target="Describing Sets", weight=1),
-                NodeLink(source="Set", target="Subsets and Set Equality", weight=1),
-                NodeLink(source="Set", target="Cardinality of Sets", weight=1),
-                NodeLink(source="Set", target="Set Operations", weight=1),
-                NodeLink(source="Set", target="Membership Tables", weight=1),
-                NodeLink(source="Functions", target="Injection, Surjection, Bijection", weight=1),
-                NodeLink(source="Functions", target="Inverse Function", weight=1),
-                NodeLink(source="Functions", target="Function Composition", weight=1),
-                NodeLink(source="Sequences and Summations", target="Recurrence Relations", weight=1),
-                NodeLink(source="Sequences and Summations", target="Summations", weight=1),
-                NodeLink(source="Matrices", target="Matrix Arithmetic", weight=1),
-
-                # Distributed
-                NodeLink(source="The Language of Propositions", target="The Language of Quantifiers", weight=2),
-                NodeLink(source="Applications of Proposition Logic", target="Membership Tables", weight=2),
-                NodeLink(source="Set Operations", target="Membership Tables", weight=2),
-                NodeLink(source="Function Composition", target="Inverse Function", weight=2),
-                NodeLink(source="The Language of Propositions", target="Describing Sets", weight=2),
-                NodeLink(source="Subsets and Set Equality", target="Set Operations", weight=2),
-                NodeLink(source="Cardinality of Sets", target="Set Operations", weight=2),
-                NodeLink(source="The Language of Propositions", target="Recurrence Relations", weight=2),
-                NodeLink(source="The Language of Quantifiers", target="Recurrence Relations", weight=2),
-                NodeLink(source="Injection, Surjection, Bijection", target="Applications of Proposition Logic", weight=2),
-                NodeLink(source="Matrix Arithmetic", target="Set Operations", weight=2),
+                NodeLink(source="布尔代数", target="真值表", weight=1),
+                NodeLink(source="布尔代数", target="布尔值", weight=2),
+                NodeLink(source="真值表", target="另一个point", weight=1),
+                NodeLink(source="另一个topic", target="另一个point", weight=4),
             ],
             categories=[
-                NodeCategory(idx=0, name="Propositional Logic"),
-                NodeCategory(idx=1, name="Predicate Logic"),
-                NodeCategory(idx=2, name="Set"),
-                NodeCategory(idx=3, name="Functions"),
-                NodeCategory(idx=4, name="Sequences and Summations"),
-                NodeCategory(idx=5, name="Matrices"),
+                NodeCategory(idx=0, name="布尔代数"),
+                NodeCategory(idx=1, name="另一个topic"),
             ],
         )
 
+# 定义导出请求模型（ExportRequest），用于请求导出笔记
 class ExportRequest(BaseModel):
     id: int
     topic: str
