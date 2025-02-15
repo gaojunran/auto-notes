@@ -59,7 +59,7 @@ onMounted(() => {
   menuItems.value = [
     {name: i18n("Lecture Replay", '课堂回放'), icon: PlayCircle, href: `/detail/recognition/${id}`},
     {name: i18n('Lecture Notes', '课堂笔记'), icon: BookOpen, href: `/detail/note/${id}/overview`},
-    {name: i18n('Connections', '建立联系'), icon: LinkIcon, href: `/detail/connect`}
+    {name: i18n('Edit Links', '建立联系'), icon: LinkIcon, href: `/detail/connect`}
   ];
   menuItems.value.forEach(item => {
     item.current = computed(() => item.href.split('/')[2] === type.value)

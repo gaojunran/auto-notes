@@ -58,7 +58,7 @@ const EXAMPLE_CACHE: Cache[] = [
         ],
         points: [
             {
-                name: 'Propositions',
+                name: 'The Language of Propositions',
                 importance: 3,
                 links: [],
                 summary: "",
@@ -130,28 +130,21 @@ Non-propositions, on the other hand, lack a truth value and are not suitable for
                 ]
             },
             {
-                name: "Truth Tables for Compound Propositions",
+                name: "Logical Equivalents",
                 importance: 2,
                 links: [],
                 summary: "",
                 subtitles: [
-                    {
-                        subtitle: "1. Basic Introduction",
-                        md: "...",
-                        raw_recognition: [{start: 500}]
-                    },
-                    {
-                        subtitle: "2. Examples & Solutions",
-                        md: "...",
-                        raw_recognition: [{start: 600}]
-                    },
-                    {
-                        subtitle: "3. Summary",
-                        md: "...",
-                        raw_recognition: [{start: 700}]
-                    },
                 ]
-            }
+            },
+            {
+                name: "Applications of Propositional Logic",
+                importance: 2,
+                links: [],
+                summary: "",
+                subtitles: [
+                ]
+            },
         ]
     }
 ];

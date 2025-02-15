@@ -78,8 +78,8 @@ onMounted(async () => {
         <Button v-for="point in points" :key="point.name" :label="point.name" :severity="currentPoint.name === point.name ? 'info' :'secondary'"
                 size="small" @click="currentPoint = point"
         ></Button>
-        <Button v-show="isBeta" label="Logic & Bit Operations" severity="secondary" size="small"></Button>
-        <Button v-show="isBeta" label="Equivalent Propositions" severity="secondary" size="small"></Button>
+<!--        <Button v-show="isBeta" label="Logic & Bit Operations" severity="secondary" size="small"></Button>-->
+<!--        <Button v-show="isBeta" label="Equivalent Propositions" severity="secondary" size="small"></Button>-->
       </div>
 
       <div id="main" class="flex-1 max-h-[70vh] overflow-y-auto">

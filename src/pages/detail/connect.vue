@@ -193,7 +193,7 @@ const columns = [
       <Loading v-model="loading" title="正为您生成知识网络……" subtitle="耗时将取决于您的历史课程数量，请耐心等待。"></Loading>
       <div class="flex justify-between items-center mb-6 gap-4">
         <div class="font-bold text-xl dark:text-white text-black">
-          {{ i18n("All Knowledge Links", "所有知识链接") }}
+          {{ i18n("Edit Links", "所有知识链接") }}
         </div>
         <Button :label="i18n('Add New Link', '添加新链接')" @click="isNewLinkShow = true" icon="pi pi-plus" size="small"></Button>
       </div>
